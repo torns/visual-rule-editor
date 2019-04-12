@@ -1,13 +1,18 @@
 <template>
   <div>
+    
   </div>
 </template>
-
 <script>
 export default {
-  name: 'ConditionWrap',
+  name: 'SelectionWrap',
   props: {
-    activity: Object
+    obj: Object
+  },
+  data: () => {
+    return {
+
+    }
   }
 }
 </script>

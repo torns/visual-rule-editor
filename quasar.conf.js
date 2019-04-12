@@ -2,20 +2,21 @@
 
 module.exports = function (ctx) {
   return {
-    // app plugins (/src/plugins)
-    plugins: [
+    // app boot (/src/boot)
+    boot: [
       'i18n',
-      'axios'
+      'axios',
+      'vrd'
     ],
     css: [
       'app.styl'
     ],
     extras: [
-      ctx.theme.mat ? 'roboto-font' : null,
+      'roboto-font',
       'material-icons' // optional, you are not bound to it
-      // 'ionicons',
-      // 'mdi',
-      // 'fontawesome'
+      // 'ionicons-v4',
+      // 'mdi-v3',
+      // 'fontawesome-v5'
     ],
     supportIE: true,
     build: {
@@ -43,29 +44,43 @@ module.exports = function (ctx) {
     framework: {
       components: [
         'QLayout',
-        'QLayoutHeader',
-        'QLayoutDrawer',
         'QPageContainer',
         'QPage',
+        'QHeader',
+        'QFooter',
+        'QDrawer',
+        'QPageSticky',
+        'QPageScroller',
+        'QScrollArea',
         'QToolbar',
         'QToolbarTitle',
         'QBtn',
+        'QBtnGroup',
+        'QBtnDropdown',
+        'QSpace',
         'QIcon',
         'QList',
-        'QListHeader',
         'QItem',
-        'QItemMain',
-        'QItemSide'
+        'QItemSection',
+        'QItemLabel',
+        'QInput',
+        'QMarkupTable',
+        'QMenu',
+        'QPopupEdit',
+        'QDialog',
+        'QCard',
+        'QCardSection'
       ],
       directives: [
-        'Ripple'
+        'Ripple',
+        'ClosePopup'
       ],
       // Quasar plugins
       plugins: [
         'Notify'
       ]
-      // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
-      // i18n: 'de' // Quasar language
+      // iconSet: 'material-icons'
+      // lang: 'de' // Quasar language
     },
     // animations: 'all' --- includes all animations
     animations: [],

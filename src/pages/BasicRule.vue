@@ -8,6 +8,9 @@
 import ConditionWrap from 'src/components/ConditionWrap.vue'
 export default {
   name: 'BasicRule',
+  components: {
+    ConditionWrap
+  },
   data: () => {
     return {
       rule: {

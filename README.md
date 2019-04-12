@@ -76,6 +76,7 @@
   "name":     "",         // 树结构名称
   "uuid":     "",         // uuid
   "props":    [],         // 树结构的属性, object数组
+  "text":     "",         // 树结构内容字符串
   "children": [],         // 树结构的子节点，treenode数组
   "methods":  []          // 树结构的方法，method数组
 }
@@ -104,24 +105,43 @@
 ### decision 决策
 ```json
 {
-  "conditions": [], // 满足的条件，judge数组
+  "uuid": "",
+  "conditions": [], // 满足的条件，condition数组
   "decisions":  []  // 决策的内容，assign / method 数组
 }
 ```
 
 ## 规则通用结构
+### 平级组合方法，用于字符串拼接、数字运算等
+```json
+{
+  "type": "combMethod",
+  "children": [], // object/带返回值的method/combMethod 三个类型，之间必须使用链接符号，如+号
+}
+```
+
+### 字符串类型（直接输入）
+```json
+{
+  "type": "string",
+  "text": ""
+}
+```
+
 ### judge 一般判断
 ```json
 {
+  "uuid":       "",
   "type":       "judge",  // 类型：判断
-  "left":       {},       // 被判断值，可以为object对象或直接指定字符串
+  "left":       {},       // 被判断值，可以为object对象或直接指定字符串, 只需要type和uuid
   "judgement":  "",       // 判断的方法, 根据left的类型从对应的类型判断库中获取，如数值型则有 == > < >= <= !=等，string类型则有string对应的各种方法
-  "right":      {}        // 被判断值，可以为method方法，object对象或直接指定字符串
+  "right":      {}        // 被判断值，可以为method方法，object对象或直接指定字符串, 只需要type和uuid
 }
 ```
 ### condition 条件
 ```json
 {
+  "uuid":     "",
   "type":     "condition",  // 类型：条件
   "logic":    "and/or",     // 逻辑：并且/或者，这里的逻辑是指所有直接子元素之间的逻辑关系
   "children": []            // 判断元素，可以为 judge / method(返回值类型为bool) / condition(嵌套多层逻辑) 
