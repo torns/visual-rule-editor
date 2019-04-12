@@ -19,7 +19,7 @@
           <tbody>
             <tr v-for="(content, c) in $store.getters['rule/ruleContents']" :key="content.uuid">
               <td v-for="(j, i) in $store.getters['rule/decisionConditionFieldUuids']" :key="j">
-                <editable-condition :condition-index="i" :content-index="c" :main-left-uuid="j" />
+                <editable-condition :condition="content.conditions[i]" :main-left-uuid="j" />
               </td>
               <td v-for="(d, i) in $store.getters['rule/decisionAssignUuids']" :key="d">
                 <editable-decision :content-index="c" :decision-index="i" :main-decision-uuid="d"/>

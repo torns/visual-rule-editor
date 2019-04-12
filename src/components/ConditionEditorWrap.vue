@@ -25,10 +25,19 @@
     </div>
     <div class="column q-gutter-lg">
       <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="col">
-        <div class="row">
+        <div class="row judge-row">
           <colored-selection :is-left="true" :current-judge="judge" />
-          <judgement-operator :content-index="contentIndex" :condition-index="conditionIndex" :judge-index="ji" />
-          <editable-string-text v-if="judge.right.type == 'string'" :string-typed="judge.right" /> <!-- TODO 其他类型的支持 -->
+          <judgement-operator :judge="judge"/>
+
+          <judge-right-selection-wrap :judge="judge"/>
+
+          <span class="remove-judge cursor-pointer float-right" @click="removeJudge(ji)">
+            <q-icon name="delete" color="negative" style="margin-top: 10px;">
+              <q-tooltip>
+                删除
+              </q-tooltip>
+            </q-icon>
+          </span>
         </div>
       </div>
     </div>
@@ -38,35 +47,36 @@
 <script>
 import ColoredSelection from './ColoredSelection'
 import JudgementOperator from './JudgementOperator'
-import EditableStringText from './EditableStringText'
+import JudgeRightSelectionWrap from './JudgeRightSelectionWrap'
 export default {
   name: 'ConditionEditorWrap',
   components: {
     ColoredSelection,
     JudgementOperator,
-    EditableStringText
+    JudgeRightSelectionWrap
   },
   props: {
-    contentIndex: Number,
-    conditionIndex: Number,
     mainLeftUuid: String, // 主判断对象uuid
+    condition: Object,
     changeToSingleLine: {
       type: Boolean,
       default: false
     }
   },
   computed: {
-    condition: {
+    judges: {
       get () {
-        return this.$store.getters['rule/ruleCondition'](this.contentIndex, this.conditionIndex)
-      },
-      set (v) {}
+        return this.condition.children || []
+      }
     }
   },
   methods: {
+    removeJudge (judgeIndex) {
+      this.$store.commit('rule/REMOVE_JUDGE_FROM_CONDITION', { condition: this.condition, judgeIndex })
+    },
     addChild () {
       let child = {
-        'uuid': 'tmp-' + Math.random(),
+        'uuid': 'tmp-judge' + Math.random(),
         'type': 'judge',
         'left': {
           'type': 'unknow'
@@ -82,8 +92,17 @@ export default {
           uuid: this.mainLeftUuid
         }
       }
-      this.$store.commit('rule/ADD_CONDITION_CHILD', { contentIndex: this.contentIndex, conditionIndex: this.conditionIndex, child })
+      this.$store.commit('rule/ADD_CONDITION_CHILD', { condition: this.condition, child })
     }
   }
 }
 </script>
+
+<style scoped>
+.remove-judge {
+  visibility: hidden;
+}
+.judge-row:hover .remove-judge {
+  visibility: visible;
+}
+</style>

@@ -52,6 +52,7 @@ module.exports = function (ctx) {
         'QPageSticky',
         'QPageScroller',
         'QScrollArea',
+        'QTooltip',
         'QToolbar',
         'QToolbarTitle',
         'QBtn',

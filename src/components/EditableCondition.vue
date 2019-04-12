@@ -9,7 +9,7 @@
       </q-popup-edit>
     </span>
 
-    <div v-if="!condition.children" class="bg-red-1">&nbsp;</div>
+    <div v-if="!condition.children || condition.children.length == 0" class="bg-red-1">&nbsp;</div>
 
     <q-menu touch-position context-menu>
       <q-list dense style="min-width: 100px">
@@ -26,7 +26,7 @@
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
         <q-card-section>
-          <condition-editor-wrap :condition-index="conditionIndex" :content-index="contentIndex" :main-left-uuid="mainLeftUuid"/>
+          <condition-editor-wrap :condition="condition" :main-left-uuid="mainLeftUuid"/>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -43,17 +43,8 @@ export default {
     ColoredSelection
   },
   props: {
-    conditionIndex: Number,
-    contentIndex: Number,
+    condition: Object,
     mainLeftUuid: String // 主判断对象的uuid
-  },
-  computed: {
-    condition: {
-      get () {
-        return this.$store.getters['rule/ruleCondition'](this.contentIndex, this.conditionIndex)
-      },
-      set (v) {}
-    }
   },
   data: () => {
     return {

@@ -3,7 +3,7 @@
     {{ $tagT(judge.judgement) }}
     <q-menu auto-close>
       <q-list>
-        <q-item clickable v-for="judgement in showedJudgements" :key="judgement" @click="$store.commit('rule/UPDATE_JUDGE_JUDGEMENT', { contentIndex, conditionIndex, judgeIndex, judgement})">
+        <q-item clickable v-for="judgement in showedJudgements" :key="judgement" @click="$store.commit('rule/UPDATE_JUDGE_JUDGEMENT', { judge, judgement})">
           <q-item-section>
             <q-item-label>{{ $tagT(judgement) }}</q-item-label>
           </q-item-section>
@@ -17,10 +17,7 @@
 export default {
   name: 'JudgementOperator',
   props: {
-    contentIndex: Number,
-    conditionIndex: Number,
-    judgeIndex: Number,
-    // judge: Object,
+    judge: Object,
     wrapClass: {
       type: String,
       default: 'q-pa-sm'
@@ -31,12 +28,6 @@ export default {
     }
   },
   computed: {
-    judge: {
-      get () {
-        return this.$store.getters['rule/ruleCondition'](this.contentIndex, this.conditionIndex).children[this.judgeIndex]
-      },
-      set (v) {}
-    },
     leftType: {
       get () {
         if (this.judge.left.type === 'object') {

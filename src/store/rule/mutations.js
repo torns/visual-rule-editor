@@ -18,40 +18,27 @@ export function SET_RULE (state, rule) {
 }
 
 export function UPDATE_DECISION_RULE_CONDITION_JUDGEMENT_RIGHT_STRING (state, { condition, judgementIndex, value }) {
-  // condition.children[judgementIndex].right.text = value
-  let judgeRight = condition.children[judgementIndex].right
-  Vue.set(judgeRight, 'text', value)
+  condition.children[judgementIndex].right.text = value
 }
 
 export function CHANGE_CONDITION_LOGIC (state, condition) {
-  // condition.logic = (condition.logic === 'and' ? 'or' : 'and')
-  Vue.set(condition, 'logic', (condition.logic === 'and' ? 'or' : 'and'))
+  condition.logic = (condition.logic === 'and' ? 'or' : 'and')
 }
 
-export function UPDATE_JUDGE_JUDGEMENT (state, { contentIndex, conditionIndex, judgeIndex, judgement }) {
-  // judge.judgement = judgement
-  // Vue.set(judge, 'judgement', judgement)
-  let judge = state.content[contentIndex].conditions[conditionIndex].children[judgeIndex]
-  Vue.set(judge, 'judgement', judgement)
+export function UPDATE_JUDGE_JUDGEMENT (state, { judge, judgement }) {
+  judge.judgement = judgement
 }
 
 export function UPDATE_STRING_TEXT (state, { obj, value }) {
-  // obj.text = value
-  Vue.set(obj, 'text', value)
+  obj.text = value
 }
 
-export function ADD_CONDITION_CHILD (state, { contentIndex, conditionIndex, child }) {
-  let content = state.content[contentIndex]
-  let condition = content.conditions[conditionIndex]
-  if (!condition || !condition.children) {
-    condition = {
-      type: 'condition',
-      logic: 'and',
-      uuid: 'tmp-' + Math.random(),
-      children: []
-    }
-    // content.conditions[conditionIndex] = condition
-    Vue.set(content.conditions, conditionIndex, condition)
+export function ADD_CONDITION_CHILD (state, { condition, child }) {
+  if (!condition.uuid || condition.uuid === '') {
+    Vue.set(condition, 'uuid', 'tmp-condition' + Math.random())
+    Vue.set(condition, 'children', [])
+    Vue.set(condition, 'type', 'condition')
+    Vue.set(condition, 'logic', 'and')
   }
   condition.children.push(child)
 }
@@ -64,4 +51,12 @@ export function UPDATE_JUDGE_LEFT (state, { judge, left, changeJudgement }) {
   if (changeJudgement) {
     judge.judgement = ''
   }
+}
+
+export function UPDATE_JUDGE_RIGHT (state, { judge, right }) {
+  Vue.set(judge, 'right', right)
+}
+
+export function REMOVE_JUDGE_FROM_CONDITION (state, { condition, judgeIndex }) {
+  condition.children.splice(judgeIndex, 1)
 }

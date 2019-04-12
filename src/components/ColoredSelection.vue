@@ -1,7 +1,7 @@
 <template>
   <span :class="['text-' + coloredDisplay.color, wrapClass]" class="cursor-pointer">
     {{coloredDisplay.display}}
-    <selection-menu v-if="currentJudge" :judge="currentJudge" :is-left="true"/>
+    <selection-menu v-if="currentJudge" @item-selected="itemSelected"/>
   </span>
 </template>
 
@@ -50,6 +50,21 @@ export default {
             color: 'grey-10'
           }
         }
+      }
+    }
+  },
+  methods: {
+    itemSelected (v) {
+      if (this.isLeft) {
+        let changeJudgement = false
+        if (this.currentJudge.left.type === 'object') {
+          let leftObj = this.$store.getters['env/findObject'](v.uuid)
+          let objJudgements = this.$judgements4Type(leftObj.valueType)
+          if (!objJudgements.includes(this.currentJudge.judgement)) {
+            changeJudgement = true
+          }
+        }
+        this.$store.commit('rule/UPDATE_JUDGE_LEFT', { judge: this.currentJudge, left: v, changeJudgement })
       }
     }
   }
