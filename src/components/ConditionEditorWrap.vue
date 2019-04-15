@@ -82,9 +82,9 @@ export default {
           'type': 'unknow'
         },
         'judgement': '请选择',
-        'right': {
+        'right': [{
           'type': 'unknow'
-        }
+        }]
       }
       if (this.mainLeftUuid && this.mainLeftUuid !== '') {
         child.left = {

@@ -1,26 +1,28 @@
 <template>
   <div class="wrapper row">
-    <div v-if="type != 'unknow'" class="change-type cursor-pointer">
-      <q-icon name="gamepad" color="accent" class="fix-top">
-        <q-tooltip>
-          选择其他
-        </q-tooltip>
-      </q-icon>
-      <selection-menu :value-type="needValueType" can-input  @item-selected="itemSelected"/>
-    </div>
-    <div v-if="type == 'unknow'" class="text-accent cursor-pointer fix-padding-top">
-      请选择
-      <selection-menu :value-type="needValueType" can-input @item-selected="itemSelected"/>
-    </div>
-    <editable-string-text v-if="type === 'string'" :string-typed="judge.right" />
-    <div v-if="type == 'object'" class="cursor-pointer fix-padding-top">
-      <span v-if="judge.right.uuid" :class="['text-' + getObjectColoredDisplay(judge.right.uuid).color]" >
-        {{getObjectColoredDisplay(judge.right.uuid).display}}
-      </span>
-      <span v-if="!judge.right.uuid" >
+    <div v-for="(j, i) in judge.right" :key="j.uuid ? j.uuid : j.type + Math.random()" class="row">
+      <div v-if="!onlyShow && j.type != 'unknow'" class="change-type cursor-pointer" :key="j.uuid">
+        <q-icon name="gamepad" color="accent" class="fix-top">
+          <q-tooltip>
+            选择其他
+          </q-tooltip>
+        </q-icon>
+        <selection-menu v-if="!onlyShow" :value-type="needValueType" :ext-info="{theJudge: j}" can-input  @item-selected="itemSelected"/>
+      </div>
+      <div v-if="j.type == 'unknow'" class="text-accent cursor-pointer fix-padding-top" :key="j.type + Math.random()">
         请选择
-      </span>
-      <selection-menu :value-type="needValueType" can-input @item-selected="itemSelected"/>
+        <selection-menu v-if="!onlyShow" :value-type="needValueType" :ext-info="{theJudge: j}" can-input @item-selected="itemSelected"/>
+      </div>
+      <editable-string-text v-if="j.type === 'string'" :string-typed="j" :wrap-class="textWrapClass"/>
+      <div v-if="j.type == 'object'" class="cursor-pointer fix-padding-top">
+        <span v-if="j.uuid" :class="['text-' + getObjectColoredDisplay(j.uuid).color]" >
+          {{getObjectColoredDisplay(j.uuid).display}}
+        </span>
+        <span v-if="!j.uuid" >
+          请选择
+        </span>
+        <selection-menu v-if="!onlyShow" :value-type="needValueType" :ext-info="{ judgeIndex: i }" can-input @item-selected="itemSelected"/>
+      </div>
     </div>
   </div>
 </template>
@@ -35,17 +37,17 @@ export default {
     EditableStringText
   },
   props: {
-    judge: Object
+    judge: Object,
+    onlyShow: {
+      type: Boolean,
+      default: false
+    },
+    textWrapClass: String
   },
   computed: {
     needValueType: {
       get () {
         return this.$store.getters['env/findObject'](this.judge.left.uuid).valueType
-      }
-    },
-    type: {
-      get () {
-        return this.judge.right.type
       }
     }
   },
@@ -53,17 +55,18 @@ export default {
     getObjectColoredDisplay (uuid) {
       return this.$store.getters['env/getObjectDisplayName'](uuid)
     },
-    itemSelected (v) {
-      let right
+    itemSelected (v, { judgeIndex }) {
+      judgeIndex = judgeIndex | 0
+      let oneRight
       if (v.type === 'string') {
-        right = v
+        oneRight = v
       } else {
-        right = {
+        oneRight = {
           uuid: v.uuid,
           type: v.type
         }
       }
-      this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.judge, right })
+      this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.judge, judgeIndex, oneRight })
     }
   }
 }

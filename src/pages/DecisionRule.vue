@@ -17,12 +17,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(content, c) in $store.getters['rule/ruleContents']" :key="content.uuid">
+            <tr v-for="(content) in $store.getters['rule/ruleContents']" :key="content.uuid">
               <td v-for="(j, i) in $store.getters['rule/decisionConditionFieldUuids']" :key="j">
                 <editable-condition :condition="content.conditions[i]" :main-left-uuid="j" />
               </td>
               <td v-for="(d, i) in $store.getters['rule/decisionAssignUuids']" :key="d">
-                <editable-decision :content-index="c" :decision-index="i" :main-decision-uuid="d"/>
+                <editable-decision :decision="content.decisions[i]" :main-decision-uuid="d"/>
               </td>
             </tr>
           </tbody>
@@ -62,10 +62,10 @@ export default {
                       'uuid': 'aaaaaaaaaa'
                     }, // 年龄
                     'judgement': '>',
-                    'right': {
+                    'right': [{
                       'type': 'string',
                       'text': '29'
-                    }
+                    }]
                   },
                   {
                     'uuid': 'c1j2',
@@ -75,10 +75,10 @@ export default {
                       'uuid': 'aaaaaaaaaa'
                     }, // 年龄
                     'judgement': '<=',
-                    'right': {
+                    'right': [{
                       'type': 'string',
                       'text': '60'
-                    }
+                    }]
                   }
                 ]
               },
@@ -95,10 +95,10 @@ export default {
                       'uuid': 'hhhhhhhhhhhhhhhh'
                     }, // 身高
                     'judgement': '<=',
-                    'right': {
+                    'right': [{
                       'type': 'string',
                       'text': '175'
-                    }
+                    }]
                   }
                 ]
               }
@@ -111,10 +111,10 @@ export default {
                   'type': 'object',
                   'uuid': 'ttttttttttttttt'
                 },
-                'right': {
+                'right': [{
                   'type': 'string',
                   'text': '临时变量的值'
-                }
+                }]
               }
             ]
           },
@@ -133,10 +133,10 @@ export default {
                       'uuid': 'aaaaaaaaaa'
                     }, // 年龄
                     'judgement': '>',
-                    'right': {
+                    'right': [{
                       'type': 'string',
                       'text': '29'
-                    }
+                    }]
                   },
                   {
                     'uuid': 'c1j2',
@@ -146,10 +146,10 @@ export default {
                       'uuid': 'aaaaaaaaaa'
                     }, // 年龄
                     'judgement': '<=',
-                    'right': {
+                    'right': [{
                       'type': 'string',
                       'text': '60'
-                    }
+                    }]
                   }
                 ]
               },
@@ -163,10 +163,10 @@ export default {
                   'type': 'object',
                   'uuid': 'ttttttttttttttt'
                 },
-                'right': {
+                'right': [{
                   'type': 'string',
                   'text': '临时变量的值'
-                }
+                }]
               }
             ]
           }

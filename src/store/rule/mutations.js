@@ -53,8 +53,10 @@ export function UPDATE_JUDGE_LEFT (state, { judge, left, changeJudgement }) {
   }
 }
 
-export function UPDATE_JUDGE_RIGHT (state, { judge, right }) {
-  Vue.set(judge, 'right', right)
+export function UPDATE_JUDGE_RIGHT (state, { judge, judgeIndex, oneRight }) {
+  let rightArray = judge.right
+  Vue.set(rightArray, judgeIndex, oneRight)
+  // Vue.set(judge, 'right', right)
 }
 
 export function REMOVE_JUDGE_FROM_CONDITION (state, { condition, judgeIndex }) {

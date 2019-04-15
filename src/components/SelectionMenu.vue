@@ -49,7 +49,8 @@ export default {
   },
   props: {
     valueType: String,
-    canInput: Boolean
+    canInput: Boolean,
+    extInfo: Object
   },
   data () {
     return {
@@ -58,7 +59,7 @@ export default {
   },
   methods: {
     objClicked (v) {
-      this.$emit('item-selected', v)
+      this.$emit('item-selected', v, this.extInfo)
       // if (this.judge) {
       //   if (this.isLeft) {
       //     let changeJudgement = false
