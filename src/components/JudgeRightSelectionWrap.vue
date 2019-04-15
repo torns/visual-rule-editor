@@ -14,7 +14,7 @@
     </div>
     <editable-string-text v-if="type === 'string'" :string-typed="judge.right" />
     <div v-if="type == 'object'" class="cursor-pointer fix-padding-top">
-      <span v-if="judge.right.uuid" :class="['text-' + getObjectColoredDisplay(judge.right.uuid).color, wrapClass]" >
+      <span v-if="judge.right.uuid" :class="['text-' + getObjectColoredDisplay(judge.right.uuid).color]" >
         {{getObjectColoredDisplay(judge.right.uuid).display}}
       </span>
       <span v-if="!judge.right.uuid" >
@@ -54,9 +54,14 @@ export default {
       return this.$store.getters['env/getObjectDisplayName'](uuid)
     },
     itemSelected (v) {
-      let right = {
-        uuid: v.uuid,
-        type: v.type
+      let right
+      if (v.type === 'string') {
+        right = v
+      } else {
+        right = {
+          uuid: v.uuid,
+          type: v.type
+        }
       }
       this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.judge, right })
     }

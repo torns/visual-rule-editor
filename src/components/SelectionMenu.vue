@@ -1,5 +1,5 @@
 <template>
-  <q-menu>
+  <q-menu v-model="showMenu">
     <q-list>
       <q-item v-if="canInput" clickable>
         <q-item-section @click="objClicked({type: 'string', text: ''})">输入值</q-item-section>
@@ -51,6 +51,11 @@ export default {
     valueType: String,
     canInput: Boolean
   },
+  data () {
+    return {
+      showMenu: false
+    }
+  },
   methods: {
     objClicked (v) {
       this.$emit('item-selected', v)
@@ -67,6 +72,8 @@ export default {
       //     this.$store.commit('rule/UPDATE_JUDGE_LEFT', { judge: this.judge, left: v, changeJudgement })
       //   }
       // }
+
+      this.showMenu = false
     }
   }
 }
