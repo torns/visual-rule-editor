@@ -25,8 +25,11 @@ export function CHANGE_CONDITION_LOGIC (state, condition) {
   condition.logic = (condition.logic === 'and' ? 'or' : 'and')
 }
 
-export function UPDATE_JUDGE_JUDGEMENT (state, { judge, judgement }) {
+export function UPDATE_JUDGE_JUDGEMENT (state, { judge, judgement, noRight }) {
   judge.judgement = judgement
+  if (noRight) {
+    judge.right = []
+  }
 }
 
 export function UPDATE_STRING_TEXT (state, { obj, value }) {
@@ -53,12 +56,20 @@ export function UPDATE_JUDGE_LEFT (state, { judge, left, changeJudgement }) {
   }
 }
 
-export function UPDATE_JUDGE_RIGHT (state, { judge, judgeIndex, oneRight }) {
+export function UPDATE_JUDGE_RIGHT (state, { judge, index, oneRight }) {
   let rightArray = judge.right
-  Vue.set(rightArray, judgeIndex, oneRight)
-  // Vue.set(judge, 'right', right)
+  Vue.set(rightArray, index, oneRight)
+}
+
+export function UPDATE_DECISION_RIGHT (state, { decision, assignIndex, oneRight }) {
+  let rightArray = decision.right
+  Vue.set(rightArray, assignIndex, oneRight)
 }
 
 export function REMOVE_JUDGE_FROM_CONDITION (state, { condition, judgeIndex }) {
   condition.children.splice(judgeIndex, 1)
+}
+
+export function REMOVE_JUDGE_RIGHT_AFTER_INDEX (state, { judge, index }) {
+  judge.right.splice(index)
 }

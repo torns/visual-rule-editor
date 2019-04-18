@@ -3,7 +3,7 @@
     {{ $tagT(judge.judgement) }}
     <q-menu auto-close>
       <q-list>
-        <q-item clickable v-for="judgement in showedJudgements" :key="judgement" @click="$store.commit('rule/UPDATE_JUDGE_JUDGEMENT', { judge, judgement})">
+        <q-item clickable v-for="judgement in showedJudgements" :key="judgement" @click="$store.commit('rule/UPDATE_JUDGE_JUDGEMENT', { judge, judgement, noRight: !$judgementHasRight(judgement)})">
           <q-item-section>
             <q-item-label>{{ $tagT(judgement) }}</q-item-label>
           </q-item-section>

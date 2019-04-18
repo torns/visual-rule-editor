@@ -2,8 +2,8 @@
   <div class="q-pa-lg q-gutter-md">
     <div class="row">
       <div class="col q-gutter-md">
-        <q-btn color="deep-orange" icon="add_circle_outline" label="增加条件"/>
-        <q-btn color="purple" icon="add" label="增加赋值"/>
+        <q-btn color="deep-orange" icon="add_circle_outline" label="增加条件" @click="addCondition"/>
+        <q-btn color="purple" icon="add" label="增加赋值" @click="addAssign"/>
         <q-btn color="primary" label="输出" @click="logRule"/>
       </div>
     </div>
@@ -217,6 +217,12 @@ export default {
   computed: {
   },
   methods: {
+    addCondition () {
+
+    },
+    addAssign () {
+
+    },
     logRule () {
       console.log(this.$store.state.rule)
     }

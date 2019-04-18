@@ -44,6 +44,12 @@ export default ({ app, router, Vue }) => {
     }
     return judgements
   }
+  Vue.prototype.$judgementHasRight = function (judgement) {
+    if (['empty', 'notEmpty', 'null', 'notNull'].includes(judgement)) {
+      return false
+    }
+    return true
+  }
   Vue.prototype.$tagT = function (tag) {
     switch (tag) {
       case '':
@@ -89,5 +95,25 @@ export default ({ app, router, Vue }) => {
       default:
         return tag
     }
+  }
+  Vue.prototype.$availableSymbols = function (valueType) {
+    let result = []
+    switch (valueType) {
+      case 'string':
+        result.push('+')
+        break
+      case 'byte':
+      case 'short':
+      case 'int':
+      case 'long':
+        result.push('%')
+      case 'double':
+      case 'float':
+        result.push(...['+', '-', '*', '/'])
+        break
+      default:
+        break
+    }
+    return result
   }
 }

@@ -1,15 +1,15 @@
 <template>
-  <div class="row">
+  <div class="row justify-center">
     <div v-for="(judge, index) in condition.children" :key="judge.uuid" class="row">
       <span v-if="index > 0" class="q-pa-xs">{{ condition.logic == 'and' ? '并且' : '或者' }}</span>
-      <colored-selection v-if="mainLeftUuid != judge.left.uuid" :obj="judge.left" class="q-pa-xs"/>
+      <colored-selection v-if="mainLeftUuid != judge.left.uuid" :obj="judge.left" wrap-class="q-pa-xs"/>
 
       <span class="q-pa-xs">{{ displayCondition(judge) }}</span>
       <q-popup-edit v-if="judge.right.type=='string'" :value="judge.right.text" buttons >
         <q-input :value="judge.right.text" dense autofocus @input="(v) => { $store.commit('rule/UPDATE_DECISION_RULE_CONDITION_JUDGEMENT_RIGHT_STRING', { condition, judgementIndex: index, value: v }) }"/>
       </q-popup-edit>
 
-      <judge-right-selection-wrap :judge="judge" only-show text-wrap-class="q-pa-xs"/>
+      <judge-right-selection-wrap v-if="$judgementHasRight(judge)" :judge="judge" only-show text-wrap-class="q-pa-xs" in-table/>
 
     </div>
 

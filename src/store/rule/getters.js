@@ -19,9 +19,11 @@ export function decisionConditionFieldUuids (state) {
     for (let ji = 0; ji < content.conditions.length; ji++) {
       let condition = content.conditions[ji]
       if (condition.uuid) {
-        let obj = condition.children[0].left
-        if (!uuids.includes(obj.uuid)) {
-          uuids.push(obj.uuid)
+        if (condition.children[0]) {
+          let obj = condition.children[0].left
+          if (!uuids.includes(obj.uuid)) {
+            uuids.push(obj.uuid)
+          }
         }
       }
     }

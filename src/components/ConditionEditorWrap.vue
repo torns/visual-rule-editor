@@ -29,7 +29,7 @@
           <colored-selection :is-left="true" :current-judge="judge" />
           <judgement-operator :judge="judge"/>
 
-          <judge-right-selection-wrap :judge="judge"/>
+          <judge-right-selection-wrap :judge="judge" v-if="$judgementHasRight(judge)"/>
 
           <span class="remove-judge cursor-pointer float-right" @click="removeJudge(ji)">
             <q-icon name="delete" color="negative" style="margin-top: 10px;">
