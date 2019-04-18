@@ -61,9 +61,9 @@ export function UPDATE_JUDGE_RIGHT (state, { judge, index, oneRight }) {
   Vue.set(rightArray, index, oneRight)
 }
 
-export function UPDATE_DECISION_RIGHT (state, { decision, assignIndex, oneRight }) {
+export function UPDATE_DECISION_RIGHT (state, { decision, index, oneRight }) {
   let rightArray = decision.right
-  Vue.set(rightArray, assignIndex, oneRight)
+  Vue.set(rightArray, index, oneRight)
 }
 
 export function REMOVE_JUDGE_FROM_CONDITION (state, { condition, judgeIndex }) {
@@ -72,4 +72,8 @@ export function REMOVE_JUDGE_FROM_CONDITION (state, { condition, judgeIndex }) {
 
 export function REMOVE_JUDGE_RIGHT_AFTER_INDEX (state, { judge, index }) {
   judge.right.splice(index)
+}
+
+export function REMOVE_DECISION_RIGHT_AFTER_INDEX (state, { decision, index }) {
+  decision.right.splice(index)
 }

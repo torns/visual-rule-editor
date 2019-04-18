@@ -29,7 +29,14 @@
           <colored-selection :is-left="true" :current-judge="judge" />
           <judgement-operator :judge="judge"/>
 
-          <judge-right-selection-wrap :judge="judge" v-if="$judgementHasRight(judge)"/>
+          <operator-right-selection-wrap
+            v-if="$judgementHasRight(judge)"
+            :needed-value-type="$store.getters['env/findObject'](mainLeftUuid).valueType"
+            :right-array="judge.right"
+            :ext-info="{judgeIndex: ji}"
+            @symbol-selected="symbolSelected"
+            @symbol-remove="symbolRemove"
+            @item-selected="itemSelected"/>
 
           <span class="remove-judge cursor-pointer float-right" @click="removeJudge(ji)">
             <q-icon name="delete" color="negative" style="margin-top: 10px;">
@@ -47,13 +54,13 @@
 <script>
 import ColoredSelection from './ColoredSelection'
 import JudgementOperator from './JudgementOperator'
-import JudgeRightSelectionWrap from './JudgeRightSelectionWrap'
+import OperatorRightSelectionWrap from './OperatorRightSelectionWrap'
 export default {
   name: 'ConditionEditorWrap',
   components: {
     ColoredSelection,
     JudgementOperator,
-    JudgeRightSelectionWrap
+    OperatorRightSelectionWrap
   },
   props: {
     mainLeftUuid: String, // 主判断对象uuid
@@ -71,6 +78,19 @@ export default {
     }
   },
   methods: {
+    symbolSelected (symbolIndex, v, extInfo) {
+      let judgeIndex = extInfo ? (extInfo.judgeIndex) : 0
+      this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.condition.children[judgeIndex], index: symbolIndex, oneRight: v })
+      this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.condition.children[judgeIndex], index: symbolIndex + 1, oneRight: { type: 'unknow' } })
+    },
+    symbolRemove (symbolIndex, extInfo) {
+      let judgeIndex = extInfo ? (extInfo.judgeIndex) : 0
+      this.$store.commit('rule/REMOVE_JUDGE_RIGHT_AFTER_INDEX', { judge: this.condition.children[judgeIndex], index: symbolIndex })
+    },
+    itemSelected (rightIndex, v, extInfo) {
+      let judgeIndex = extInfo ? (extInfo.judgeIndex) : 0
+      this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.condition.children[judgeIndex], index: rightIndex, oneRight: v })
+    },
     removeJudge (judgeIndex) {
       this.$store.commit('rule/REMOVE_JUDGE_FROM_CONDITION', { condition: this.condition, judgeIndex })
     },

@@ -112,13 +112,6 @@
 ```
 
 ## 规则通用结构
-### 平级组合方法，用于字符串拼接、数字运算等
-```json
-{
-  "type": "combMethod",
-  "children": [], // object/带返回值的method/combMethod 三个类型，之间必须使用链接符号，如+号
-}
-```
 
 ### 字符串类型（直接输入）
 ```json
@@ -135,7 +128,7 @@
   "type":       "judge",  // 类型：判断
   "left":       {},       // 被判断值，可以为object对象或直接指定字符串, 只需要type和uuid
   "judgement":  "",       // 判断的方法, 根据left的类型从对应的类型判断库中获取，如数值型则有 == > < >= <= !=等，string类型则有string对应的各种方法
-  "right":      {}        // 被判断值，可以为method方法，object对象或直接指定字符串, 只需要type和uuid
+  "right":      []        // 被判断值，可以为method方法，object对象，链接符号或直接指定字符串, obj只需要type和uuid
 }
 ```
 ### condition 条件
@@ -152,7 +145,7 @@
 {
   "type":   "assign", // 类型：赋值
   "left":   {},       // 赋值左侧对象
-  "right":  {}        // 值，可以为method/object或直接指定字符串
+  "right":  []       // 值，可以为method/object/链接符号或直接指定字符串数组
 }
 ```
 ### activity 完整的规则行为(条件-动作)
@@ -162,6 +155,21 @@
   "actions":    [], // 行为，method/assign 的数组
 }
 ```
+
+# 规则对象类型列表
+名称 | 说明
+:---: | :---:
+object | 单个对象
+method | 方法
+sheet | 内存表
+treenode | 树结构节点
+basicRule | 一般规则
+decisionRule | 决策表规则
+string | 可直接输入的字符串
+judge | 一个逻辑判断
+condition | 一个多个逻辑判断的组合（通过and|or的关系）
+assign | 赋值
+symbol | 链接符号
 
 # 数据类型
 名称 | 类型说明
@@ -189,7 +197,7 @@ date | 日期
 <= | 小于等于
 != | 不等于
 
-### 后缀方法 - 可直接在对象后面添加的方法
+### 连接符 - 可直接在对象之间添加
 符号 | 说明
 :---: | :---:
 + | 加
@@ -218,7 +226,9 @@ contained | 存在于
 notContained | 不存在于
 regex | 符合正则表达式
 
-### 后缀方法
+- 部分判断符号是不需要右侧数据的
+
+### 连接符
 符号 | 说明
 :---: | :---:
 + | 拼接

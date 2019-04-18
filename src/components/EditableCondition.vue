@@ -9,7 +9,17 @@
         <q-input :value="judge.right.text" dense autofocus @input="(v) => { $store.commit('rule/UPDATE_DECISION_RULE_CONDITION_JUDGEMENT_RIGHT_STRING', { condition, judgementIndex: index, value: v }) }"/>
       </q-popup-edit>
 
-      <judge-right-selection-wrap v-if="$judgementHasRight(judge)" :judge="judge" only-show text-wrap-class="q-pa-xs" in-table/>
+      <operator-right-selection-wrap
+        v-if="$judgementHasRight(judge)"
+        :needed-value-type="$store.getters['env/findObject'](mainLeftUuid).valueType"
+        :right-array="judge.right"
+        :ext-info="{judgeIndex: index}"
+        @symbol-selected="symbolSelected"
+        @symbol-remove="symbolRemove"
+        @item-selected="itemSelected"
+        only-show
+        text-wrap-class="q-pa-xs"
+        in-table/>
 
     </div>
 
@@ -40,13 +50,13 @@
 <script>
 import ConditionEditorWrap from './ConditionEditorWrap'
 import ColoredSelection from './ColoredSelection'
-import JudgeRightSelectionWrap from './JudgeRightSelectionWrap'
+import OperatorRightSelectionWrap from './OperatorRightSelectionWrap'
 export default {
   name: 'EditableCondition',
   components: {
     ConditionEditorWrap,
     ColoredSelection,
-    JudgeRightSelectionWrap
+    OperatorRightSelectionWrap
   },
   props: {
     condition: Object,
@@ -58,6 +68,19 @@ export default {
     }
   },
   methods: {
+    symbolSelected (symbolIndex, v, extInfo) {
+      let judgeIndex = extInfo ? (extInfo.judgeIndex) : 0
+      this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.condition.children[judgeIndex], index: symbolIndex, oneRight: v })
+      this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.condition.children[judgeIndex], index: symbolIndex + 1, oneRight: { type: 'unknow' } })
+    },
+    symbolRemove (symbolIndex, extInfo) {
+      let judgeIndex = extInfo ? (extInfo.judgeIndex) : 0
+      this.$store.commit('rule/REMOVE_JUDGE_RIGHT_AFTER_INDEX', { judge: this.condition.children[judgeIndex], index: symbolIndex })
+    },
+    itemSelected (rightIndex, v, extInfo) {
+      let judgeIndex = extInfo ? (extInfo.judgeIndex) : 0
+      this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.condition.children[judgeIndex], index: rightIndex, oneRight: v })
+    },
     popupValue (judgementIndex) {
       return this.condition.children[judgementIndex].right.text
     },

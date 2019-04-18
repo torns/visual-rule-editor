@@ -27,6 +27,7 @@
             </tr>
           </tbody>
         </q-markup-table>
+        <q-btn icon="add" class="full-width"/>
       </div>
     </div>
   </div>
