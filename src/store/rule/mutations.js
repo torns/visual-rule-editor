@@ -84,3 +84,7 @@ export function UPDATE_METHOD_PARAM (state, { method, index, value }) {
   }
   Vue.set(method.params, index, value)
 }
+
+export function ADD_DECISION_ROW (state, { decision }) {
+  state.content.push(decision)
+}

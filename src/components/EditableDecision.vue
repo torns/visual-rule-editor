@@ -10,6 +10,8 @@
         in-table/>
     </div>
 
+    <div v-if="!decision.right || decision.right.length == 0" class="bg-red-1">&nbsp;</div>
+
     <q-menu touch-position context-menu>
       <q-list dense style="min-width: 100px">
         <q-item clickable v-close-popup @click="editing = true">

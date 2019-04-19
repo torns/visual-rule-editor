@@ -27,7 +27,7 @@
             </tr>
           </tbody>
         </q-markup-table>
-        <q-btn icon="add" class="full-width"/>
+        <q-btn icon="add" class="full-width" @click="addRow"/>
       </div>
     </div>
   </div>
@@ -225,6 +225,9 @@ export default {
     },
     addAssign () {
 
+    },
+    addRow () {
+      this.$store.dispatch('rule/addDecision')
     },
     logRule () {
       console.log(this.$store.state.rule)
