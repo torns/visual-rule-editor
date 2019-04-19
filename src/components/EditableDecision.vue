@@ -6,7 +6,8 @@
       <operator-right-selection-wrap
         :right-array="decision.right"
         only-show
-        text-wrap-class="q-pa-xs"/>
+        text-wrap-class="q-pa-xs"
+        in-table/>
     </div>
 
     <q-menu touch-position context-menu>

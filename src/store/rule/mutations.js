@@ -77,3 +77,10 @@ export function REMOVE_JUDGE_RIGHT_AFTER_INDEX (state, { judge, index }) {
 export function REMOVE_DECISION_RIGHT_AFTER_INDEX (state, { decision, index }) {
   decision.right.splice(index)
 }
+
+export function UPDATE_METHOD_PARAM (state, { method, index, value }) {
+  if (!method.params) {
+    Vue.set(method, 'params', [])
+  }
+  Vue.set(method.params, index, value)
+}

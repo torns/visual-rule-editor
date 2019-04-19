@@ -1,13 +1,13 @@
 <template>
-  <div class="wrapper row">
-    <div v-for="(r, i) in rightArray" :key="r.uuid ? r.uuid : r.type + Math.random()" class="row">
+  <div class="wrapper row hover-show-parent">
+    <div v-for="(r, i) in rightArray" :key="r.uuid ? r.uuid : r.type + Math.random()" class="row hover-show-parent">
       <!-- 链接符号 -->
-      <div v-if="i % 2 == 1 && r.type == 'symbol'" class="cursor-pointer" :class="textWrapClass">
+      <div v-if="r.type == 'symbol'" class="cursor-pointer" :class="textWrapClass">
         {{r.symbol}}
         <symbol-menu v-if="!onlyShow" :target-obj-type="neededValueType" :ext-info="{ symbolIndex: i }" @item-selected="symbolSelected" @remove-selected="symbolRemove"/>
       </div>
       <!-- 变量前的选择符号 -->
-      <div v-if="i % 2 == 0 && !onlyShow && r.type != 'unknow'" class="change-type cursor-pointer">
+      <div v-if="!onlyShow && r.type != 'unknow' && r.type != 'symbol'" class="change-type cursor-pointer">
         <q-icon name="gamepad" color="accent" class="fix-top">
           <q-tooltip>
             选择其他
@@ -16,14 +16,14 @@
         <selection-menu :value-type="neededValueType" :ext-info="{ rightIndex: i }" can-input  @item-selected="itemSelected"/>
       </div>
       <!-- 变量未知的情况下 -->
-      <div v-if="i % 2 == 0 && r.type == 'unknow'" class="text-accent cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
+      <div v-if="r.type == 'unknow'" class="text-accent cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
         请选择
         <selection-menu v-if="!onlyShow" :value-type="neededValueType" :ext-info="{ rightIndex: i }" can-input @item-selected="itemSelected"/>
       </div>
       <!-- 变量为直接输入字符串 -->
-      <editable-string-text v-if="i % 2 == 0 && r.type === 'string'" :string-typed="r" :wrap-class="textWrapClass"/>
+      <editable-string-text v-if="r.type === 'string'" :string-typed="r" :wrap-class="textWrapClass"/>
       <!-- 变量为对象 -->
-      <div v-if="i % 2 == 0 && r.type == 'object'" class="cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
+      <div v-if="r.type == 'object'" class="cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
         <span v-if="r.uuid" :class="['text-' + getObjectColoredDisplay(r.uuid).color]" >
           {{getObjectColoredDisplay(r.uuid).display}}
         </span>
@@ -31,6 +31,10 @@
           请选择
         </span>
         <selection-menu v-if="!onlyShow" :value-type="neededValueType" :ext-info="{ rightIndex: i }" can-input @item-selected="itemSelected"/>
+      </div>
+      <!-- 变量为方法 -->
+      <div v-if="r.type == 'method'" class="cursor-pointer"  :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
+        <method-displayer :method="r" :only-show="onlyShow"/>
       </div>
     </div>
     <div v-if="showSymbolLink" class="link-symbol cursor-pointer">
@@ -43,13 +47,15 @@
 import EditableStringText from './EditableStringText'
 import SelectionMenu from './SelectionMenu'
 import SymbolMenu from './SymbolMenu'
+import MethodDisplayer from './MethodDisplayer'
 
 export default {
   name: 'OperatorRightSelectionWrap',
   components: {
     SelectionMenu,
     SymbolMenu,
-    EditableStringText
+    EditableStringText,
+    MethodDisplayer
   },
   props: {
     neededValueType: String,
@@ -96,21 +102,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.fix-top {
-  margin-top: 11px;
-}
-.fix-padding-top {
-  padding-top: 8px;
-}
-.fix-padding-top-table {
-  padding-top: 4px;
-}
-.change-type, .link-symbol {
-  visibility: hidden
-}
-.wrapper:hover .change-type, .wrapper:hover .link-symbol{
-  visibility: visible;
-}
-</style>

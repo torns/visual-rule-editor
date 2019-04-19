@@ -29,6 +29,47 @@ export function getObjectDisplayName (state) {
   }
 }
 
+export function findMethod (state) {
+  return (uuid) => {
+    let r = null
+    let found = false
+    for (let i = 0; i < state.values.length && !found; i++) {
+      let obj = state.values[i]
+      for (let j = 0; j < obj.methods.length && !found; j++) {
+        let m = obj.methods[j]
+        if (m.uuid === uuid) {
+          r = m
+          found = true
+        }
+      }
+    }
+    for (let i = 0; i < state.variables.length && !found; i++) {
+      let obj = state.variables[i]
+      for (let j = 0; j < obj.methods.length && !found; j++) {
+        let m = obj.methods[j]
+        if (m.uuid === uuid) {
+          r = m
+          found = true
+        }
+      }
+    }
+    for (let i = 0; i < state.sheets.length && !found; i++) {
+      let s = state.sheets[i]
+      for (let vi = 0; vi < s.fields.length && !found; vi++) {
+        let obj = s.fields[vi]
+        for (let j = 0; j < obj.methods.length && !found; j++) {
+          let m = obj.methods[j]
+          if (m.uuid === uuid) {
+            r = m
+            found = true
+          }
+        }
+      }
+    }
+    return r
+  }
+}
+
 export function findObject (state) {
   return (uuid, withoutSheet, withoutTree) => {
     let r = null

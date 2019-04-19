@@ -207,7 +207,9 @@ export default {
             'name': 'tempX',
             'uuid': 'ttttttttttttttt',
             'valueType': 'string',
-            'methods': []
+            'methods': [
+              { 'type': 'method', 'display': '从临时变量中测试{arg1}参数{arg2}', 'name': '', 'group': '', 'uuid': 'mmmethod', 'valueType': 'string', 'paramTypes': ['string', 'string'], 'params': [] }
+            ]
           }
         ],
         'sheets': [],
