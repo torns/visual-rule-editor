@@ -6,7 +6,7 @@
         <span class="text-accent" v-if="!getParam(methodParamIndexes[i] - 1)">请选择</span>
         <!-- 变量为直接输入字符串 -->
         <div v-if="getParam(methodParamIndexes[i] - 1) && getParam(methodParamIndexes[i] - 1).type === 'string'" class="row hover-show-parent">
-          <q-icon v-if="!onlyShow" name="gamepad" color="accent" class="mt-4 change-type">
+          <q-icon v-if="!onlyShow" name="gamepad" color="accent" class="mt-4 hover-show">
             <q-tooltip>
               选择其他
             </q-tooltip>
@@ -81,7 +81,7 @@ export default {
       return this.method.params ? this.method.params[index] : false
     },
     itemSelected (v, { paramIndex }) {
-      this.$store.commit('rule/UPDATE_METHOD_PARAM', { method: this.method, index: paramIndex, value: v })
+      this.$store.commit('rule/UPDATE_METHOD_PARAM', { method: this.method, index: paramIndex, value: { uuid: v.uuid, type: v.type } })
     }
   }
 }

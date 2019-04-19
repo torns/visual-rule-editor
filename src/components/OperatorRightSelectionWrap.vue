@@ -7,7 +7,7 @@
         <symbol-menu v-if="!onlyShow" :target-obj-type="neededValueType" :ext-info="{ symbolIndex: i }" @item-selected="symbolSelected" @remove-selected="symbolRemove"/>
       </div>
       <!-- 变量前的选择符号 -->
-      <div v-if="!onlyShow && r.type != 'unknow' && r.type != 'symbol'" class="change-type cursor-pointer">
+      <div v-if="!onlyShow && r.type != 'unknow' && r.type != 'symbol'" class="hover-show cursor-pointer">
         <q-icon name="gamepad" color="accent" class="fix-top">
           <q-tooltip>
             选择其他
@@ -37,7 +37,7 @@
         <method-displayer :method="r" :only-show="onlyShow"/>
       </div>
     </div>
-    <div v-if="showSymbolLink" class="link-symbol cursor-pointer">
+    <div v-if="showSymbolLink" class="hover-show cursor-pointer">
       <q-icon name="usb" class="fix-top"/>
       <symbol-menu :target-obj-type="neededValueType" :ext-info="{ symbolIndex: -1 }" @item-selected="symbolSelected"/>
     </div>

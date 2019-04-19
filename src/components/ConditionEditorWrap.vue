@@ -25,7 +25,7 @@
     </div>
     <div class="column q-gutter-lg">
       <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="col">
-        <div class="row judge-row">
+        <div class="row hover-show-parent">
           <colored-selection :is-left="true" :current-judge="judge" />
           <judgement-operator :judge="judge"/>
 
@@ -38,7 +38,7 @@
             @symbol-remove="symbolRemove"
             @item-selected="itemSelected"/>
 
-          <span class="remove-judge cursor-pointer float-right" @click="removeJudge(ji)">
+          <span class="hover-show cursor-pointer float-right" @click="removeJudge(ji)">
             <q-icon name="delete" color="negative" style="margin-top: 10px;">
               <q-tooltip>
                 删除
@@ -117,12 +117,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.remove-judge {
-  visibility: hidden;
-}
-.judge-row:hover .remove-judge {
-  visibility: visible;
-}
-</style>
