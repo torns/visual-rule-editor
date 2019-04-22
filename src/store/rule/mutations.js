@@ -88,3 +88,29 @@ export function UPDATE_METHOD_PARAM (state, { method, index, value }) {
 export function ADD_DECISION_ROW (state, { decision }) {
   state.content.push(decision)
 }
+
+export function MOVE_CONDITION_INDEX (state, { index, left }) {
+  let contents = state.content
+  for (let i = 0; i < contents.length; i++) {
+    let conditions = contents[i].conditions
+    let movedConditions = conditions.splice(index, 1)
+    if (left) {
+      conditions.splice(index - 1, 0, ...movedConditions)
+    } else {
+      conditions.splice(index + 1, 0, ...movedConditions)
+    }
+  }
+}
+
+export function MOVE_DECISION_INDEX (state, { index, left }) {
+  let contents = state.content
+  for (let i = 0; i < contents.length; i++) {
+    let decisions = contents[i].decisions
+    let movedDecisions = decisions.splice(index, 1)
+    if (left) {
+      decisions.splice(index - 1, 0, ...movedDecisions)
+    } else {
+      decisions.splice(index + 1, 0, ...movedDecisions)
+    }
+  }
+}

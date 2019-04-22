@@ -26,3 +26,11 @@ export function addDecision ({ commit, state, getters }) {
   }
   commit('ADD_DECISION_ROW', { decision })
 }
+
+export function moveCondition ({ commit }, { index, left }) {
+  commit('MOVE_CONDITION_INDEX', { index, left })
+}
+
+export function moveDecision ({ commit }, { index, left }) {
+  commit('MOVE_DECISION_INDEX', { index, left })
+}

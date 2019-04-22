@@ -12,8 +12,24 @@
         <q-markup-table class="text-center">
           <thead>
             <tr>
-              <th v-for="field in $store.getters['rule/decisionConditionFieldUuids']" :key="field">{{ $store.getters['env/getObjectDisplayName'](field).display }}</th>
-              <th v-for="decision in $store.getters['rule/decisionAssignUuids']" :key="decision">{{  $store.getters['env/getObjectDisplayName'](decision).display }}</th>
+              <th v-for="(field, index) in $store.getters['rule/decisionConditionFieldUuids']" :key="field" class="hover-show-parent">
+                <q-icon name="chevron_left" size="1.5rem" class="cursor-pointer hover-show" v-if="index != 0" @click="conditionMoveLeft(index)">
+                  <q-tooltip>前移</q-tooltip>
+                </q-icon>
+                {{ $store.getters['env/getObjectDisplayName'](field).display }}
+                <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionConditionFieldUuids'].length - 1" @click="conditionMoveRight(index)">
+                  <q-tooltip>后移</q-tooltip>
+                </q-icon>
+              </th>
+              <th v-for="(decision, index) in $store.getters['rule/decisionAssignUuids']" :key="decision">
+                <q-icon name="chevron_left" size="1.5rem" class="cursor-pointer hover-show" v-if="index != 0" @click="decisionMoveLeft(index)">
+                  <q-tooltip>前移</q-tooltip>
+                </q-icon>
+                {{  $store.getters['env/getObjectDisplayName'](decision).display }}
+                <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionConditionFieldUuids'].length - 1" @click="decisionMoveRight(index)">
+                  <q-tooltip>后移</q-tooltip>
+                </q-icon>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -228,6 +244,18 @@ export default {
     },
     addRow () {
       this.$store.dispatch('rule/addDecision')
+    },
+    conditionMoveLeft (index) {
+      this.$store.dispatch('rule/moveCondition', { index, left: true })
+    },
+    conditionMoveRight (index) {
+      this.$store.dispatch('rule/moveCondition', { index, left: false })
+    },
+    decisionMoveLeft (index) {
+      this.$store.dispatch('rule/moveDecision', { index, left: true })
+    },
+    decisionMoveRight (index) {
+      this.$store.dispatch('rule/moveDecision', { index, left: false })
     },
     logRule () {
       console.log(this.$store.state.rule)
