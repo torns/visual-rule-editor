@@ -34,3 +34,11 @@ export function moveCondition ({ commit }, { index, left }) {
 export function moveDecision ({ commit }, { index, left }) {
   commit('MOVE_DECISION_INDEX', { index, left })
 }
+
+export function addCondition ({ commit }, obj) {
+  commit('APPEND_NEW_CONDITION', obj)
+}
+
+export function addAssign ({ commit }, obj) {
+  commit('APPEND_NEW_ASSIGN', obj)
+}

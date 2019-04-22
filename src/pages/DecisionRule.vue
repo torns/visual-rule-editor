@@ -2,8 +2,12 @@
   <div class="q-pa-lg q-gutter-md">
     <div class="row">
       <div class="col q-gutter-md">
-        <q-btn color="deep-orange" icon="add_circle_outline" label="增加条件" @click="addCondition"/>
-        <q-btn color="purple" icon="add" label="增加赋值" @click="addAssign"/>
+        <q-btn color="deep-orange" icon="add_circle_outline" label="增加条件">
+          <selection-menu @item-selected="addCondition"/>
+        </q-btn>
+        <q-btn color="purple" icon="add" label="增加赋值">
+          <selection-menu @item-selected="addAssign"/>
+        </q-btn>
         <q-btn color="primary" label="输出" @click="logRule"/>
       </div>
     </div>
@@ -21,7 +25,7 @@
                   <q-tooltip>后移</q-tooltip>
                 </q-icon>
               </th>
-              <th v-for="(decision, index) in $store.getters['rule/decisionAssignUuids']" :key="decision">
+              <th v-for="(decision, index) in $store.getters['rule/decisionAssignUuids']" :key="decision" class="hover-show-parent">
                 <q-icon name="chevron_left" size="1.5rem" class="cursor-pointer hover-show" v-if="index != 0" @click="decisionMoveLeft(index)">
                   <q-tooltip>前移</q-tooltip>
                 </q-icon>
@@ -52,11 +56,16 @@
 <script>
 import EditableCondition from 'src/components/EditableCondition'
 import EditableDecision from 'src/components/EditableDecision'
+
+import SelectionMenu from 'src/components/SelectionMenu'
+
 export default {
   name: 'DecisionRule',
   components: {
     EditableCondition,
-    EditableDecision
+    EditableDecision,
+
+    SelectionMenu
   },
   data: () => {
     return {
@@ -236,11 +245,11 @@ export default {
   computed: {
   },
   methods: {
-    addCondition () {
-
+    addCondition (v) {
+      this.$store.dispatch('rule/addCondition', { type: 'object', uuid: v.uuid })
     },
-    addAssign () {
-
+    addAssign (v) {
+      this.$store.dispatch('rule/addAssign', { type: 'object', uuid: v.uuid })
     },
     addRow () {
       this.$store.dispatch('rule/addDecision')

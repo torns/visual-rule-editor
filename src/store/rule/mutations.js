@@ -114,3 +114,43 @@ export function MOVE_DECISION_INDEX (state, { index, left }) {
     }
   }
 }
+
+export function APPEND_NEW_CONDITION (state, obj) {
+  let contents = state.content
+  for (let i = 0; i < contents.length; i++) {
+    let conditions = contents[i].conditions
+    if (i === 0) {
+      conditions.push({
+        uuid: 'tmp-condition' + Math.random(),
+        type: 'condition',
+        logic: 'and',
+        children: [
+          {
+            uuid: 'tmp-judge' + Math.random(),
+            type: 'judge',
+            left: obj,
+            judgement: '请选择',
+            right: [
+              { type: 'unknow' }
+            ]
+          }
+        ]
+      })
+    } else {
+      conditions.push({})
+    }
+  }
+}
+
+export function APPEND_NEW_ASSIGN (state, obj) {
+  let contents = state.content
+  for (let i = 0; i < contents.length; i++) {
+    let decisions = contents[i].decisions
+    decisions.push({
+      uuid: 'tmp-assign' + Math.random(),
+      type: 'assign',
+      left: obj,
+      right: [{ type: 'unknow' }]
+    })
+  }
+}
