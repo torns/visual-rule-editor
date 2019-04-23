@@ -42,3 +42,15 @@ export function addCondition ({ commit }, obj) {
 export function addAssign ({ commit }, obj) {
   commit('APPEND_NEW_ASSIGN', obj)
 }
+
+export function removeRow ({ commit }, { index }) {
+  commit('REMOVE_ONE_OUTER_DECISION', { index })
+}
+
+export function removeCondition ({ commit }, { index }) {
+  commit('REMOVE_CONDITION', { index })
+}
+
+export function removeDecision ({ commit }, { index }) {
+  commit('REMOVE_ASSIGN', { index })
+}

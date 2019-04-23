@@ -1,8 +1,8 @@
 <template>
   <div class="row justify-center">
     <div v-if="decision.type == 'assign'">
-      <colored-selection v-if="mainDecisionUuid != decision.left.uuid" :obj="decision.left" class="q-pa-xs"/>
-      <span v-if="mainDecisionUuid != decision.left.uuid">等于</span>
+      <colored-selection v-if="decision.left && mainDecisionUuid != decision.left.uuid" :obj="decision.left" class="q-pa-xs"/>
+      <span v-if="decision.left && mainDecisionUuid != decision.left.uuid">等于</span>
       <operator-right-selection-wrap
         :right-array="decision.right"
         only-show

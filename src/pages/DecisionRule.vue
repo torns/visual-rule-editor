@@ -8,7 +8,6 @@
         <q-btn color="purple" icon="add" label="增加赋值">
           <selection-menu @item-selected="addAssign"/>
         </q-btn>
-        <q-btn color="primary" label="输出" @click="logRule"/>
       </div>
     </div>
     <div class="row">
@@ -24,31 +23,53 @@
                 <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionConditionFieldUuids'].length - 1" @click="conditionMoveRight(index)">
                   <q-tooltip>后移</q-tooltip>
                 </q-icon>
+                <q-icon name="delete" class="hover-show cursor-pointer float-right" @click="removeCondition(index)">
+                  <q-tooltip>删除</q-tooltip>
+                </q-icon>
               </th>
-              <th v-for="(decision, index) in $store.getters['rule/decisionAssignUuids']" :key="decision" class="hover-show-parent">
+              <th v-for="(decision, index) in $store.getters['rule/decisionAssignUuids']" :key="decision" class="hover-show-parent" :style="{'border-left': index == 0 ? '1px solid rgba(0,0,0,0.12)' : 0}">
                 <q-icon name="chevron_left" size="1.5rem" class="cursor-pointer hover-show" v-if="index != 0" @click="decisionMoveLeft(index)">
                   <q-tooltip>前移</q-tooltip>
                 </q-icon>
                 {{  $store.getters['env/getObjectDisplayName'](decision).display }}
-                <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionConditionFieldUuids'].length - 1" @click="decisionMoveRight(index)">
+                <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionAssignUuids'].length - 1" @click="decisionMoveRight(index)">
                   <q-tooltip>后移</q-tooltip>
                 </q-icon>
+                <q-icon name="delete" class="hover-show cursor-pointer float-right" @click="removeDecision(index)">
+                  <q-tooltip>删除</q-tooltip>
+                </q-icon>
               </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(content) in $store.getters['rule/ruleContents']" :key="content.uuid">
+            <tr v-for="(content, ci) in $store.getters['rule/ruleContents']" :key="content.uuid">
               <td v-for="(j, i) in $store.getters['rule/decisionConditionFieldUuids']" :key="j">
                 <editable-condition :condition="content.conditions[i]" :main-left-uuid="j" />
               </td>
-              <td v-for="(d, i) in $store.getters['rule/decisionAssignUuids']" :key="d">
+              <td v-for="(d, i) in $store.getters['rule/decisionAssignUuids']" :key="d" :style="{'border-left': i == 0 ? '1px solid rgba(0,0,0,0.12)' : 0}">
                 <editable-decision :decision="content.decisions[i]" :main-decision-uuid="d"/>
+              </td>
+              <td class="hover-show-parent">
+                <q-icon name="delete" class="hover-show cursor-pointer" @click="removeRow(ci)">
+                  <q-tooltip>删除</q-tooltip>
+                </q-icon>
               </td>
             </tr>
           </tbody>
         </q-markup-table>
         <q-btn icon="add" class="full-width" @click="addRow"/>
       </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <q-input
+          v-model="ruleText"
+          filled
+          type="textarea"
+        />
+      </div>
+      <q-btn color="primary" label="导入" @click="inputRule"/>
     </div>
   </div>
 </template>
@@ -72,6 +93,23 @@ export default {
       rule: {
         'type': 'decisionRule',
         'uuid': 'ddddddd',
+        'head': {
+          'conditions': [
+            {
+              'type': 'object',
+              'uuid': 'aaaaaaaaaa'
+            }, {
+              'type': 'object',
+              'uuid': 'hhhhhhhhhhhhhhhh'
+            }
+          ],
+          'decisions': [
+            {
+              'type': 'object',
+              'uuid': 'ttttttttttttttt'
+            }
+          ]
+        },
         'content': [
           {
             'conditions': [
@@ -239,10 +277,19 @@ export default {
         ],
         'sheets': [],
         'trees': []
-      }
+      },
+      ruleTextTmp: ''
     }
   },
   computed: {
+    ruleText: {
+      get () {
+        return JSON.stringify(this.$store.state.rule, null, 2)
+      },
+      set (ov, nv) {
+        this.ruleTextTmp = nv
+      }
+    }
   },
   methods: {
     addCondition (v) {
@@ -266,8 +313,17 @@ export default {
     decisionMoveRight (index) {
       this.$store.dispatch('rule/moveDecision', { index, left: false })
     },
-    logRule () {
-      console.log(this.$store.state.rule)
+    removeCondition (index) {
+      this.$store.dispatch('rule/removeCondition', { index })
+    },
+    removeDecision (index) {
+      this.$store.dispatch('rule/removeDecision', { index })
+    },
+    removeRow (index) {
+      this.$store.dispatch('rule/removeRow', { index })
+    },
+    inputRule () {
+      this.$store.dispatch('rule/setRule', JSON.parse(this.ruleTextTmp))
     }
   },
   mounted () {

@@ -4,7 +4,9 @@
       <span v-if="index > 0" class="q-pa-xs">{{ condition.logic == 'and' ? '并且' : '或者' }}</span>
       <colored-selection v-if="mainLeftUuid != judge.left.uuid" :obj="judge.left" wrap-class="q-pa-xs"/>
 
-      <span class="q-pa-xs">{{ displayCondition(judge) }}</span>
+      <!-- <span class="q-pa-xs">{{ displayCondition(judge) }}</span> -->
+      <judgement-operator :judge="judge" wrap-class="q-pa-xs"/>
+
       <q-popup-edit v-if="judge.right.type=='string'" :value="judge.right.text" buttons >
         <q-input :value="judge.right.text" dense autofocus @input="(v) => { $store.commit('rule/UPDATE_DECISION_RULE_CONDITION_JUDGEMENT_RIGHT_STRING', { condition, judgementIndex: index, value: v }) }"/>
       </q-popup-edit>
@@ -51,12 +53,14 @@
 import ConditionEditorWrap from './ConditionEditorWrap'
 import ColoredSelection from './ColoredSelection'
 import OperatorRightSelectionWrap from './OperatorRightSelectionWrap'
+import JudgementOperator from './JudgementOperator'
 export default {
   name: 'EditableCondition',
   components: {
     ConditionEditorWrap,
     ColoredSelection,
-    OperatorRightSelectionWrap
+    OperatorRightSelectionWrap,
+    JudgementOperator
   },
   props: {
     condition: Object,

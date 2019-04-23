@@ -1,10 +1,14 @@
 <template>
   <div class="wrapper row hover-show-parent">
+    <div v-if="!rightArray" class="text-accent cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
+      请选择
+      <selection-menu v-if="!onlyShow" :value-type="neededValueType" :ext-info="{ rightIndex: 0 }" can-input @item-selected="itemSelected"/>
+    </div>
     <div v-for="(r, i) in rightArray" :key="r.uuid ? r.uuid : r.type + Math.random()" class="row hover-show-parent">
       <!-- 链接符号 -->
       <div v-if="r.type == 'symbol'" class="cursor-pointer" :class="textWrapClass">
         {{r.symbol}}
-        <symbol-menu v-if="!onlyShow" :target-obj-type="neededValueType" :ext-info="{ symbolIndex: i }" @item-selected="symbolSelected" @remove-selected="symbolRemove"/>
+        <symbol-menu :target-obj-type="neededValueType" :ext-info="{ symbolIndex: i }" @item-selected="symbolSelected" @remove-selected="symbolRemove"/>
       </div>
       <!-- 变量前的选择符号 -->
       <div v-if="!onlyShow && r.type != 'unknow' && r.type != 'symbol'" class="hover-show cursor-pointer">
@@ -18,7 +22,7 @@
       <!-- 变量未知的情况下 -->
       <div v-if="r.type == 'unknow'" class="text-accent cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
         请选择
-        <selection-menu v-if="!onlyShow" :value-type="neededValueType" :ext-info="{ rightIndex: i }" can-input @item-selected="itemSelected"/>
+        <selection-menu :value-type="neededValueType" :ext-info="{ rightIndex: i }" can-input @item-selected="itemSelected"/>
       </div>
       <!-- 变量为直接输入字符串 -->
       <editable-string-text v-if="r.type === 'string'" :string-typed="r" :wrap-class="textWrapClass"/>
@@ -73,7 +77,7 @@ export default {
   },
   computed: {
     showSymbolLink () {
-      return !this.onlyShow && this.rightArray.length % 2 === 1
+      return !this.onlyShow && this.rightArray && this.rightArray.length % 2 === 1
     }
   },
   methods: {

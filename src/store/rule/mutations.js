@@ -14,6 +14,8 @@ export function SET_RULE (state, rule) {
       break
     case 'decisionRule':
       state.content = rule.content
+      state.head = rule.head
+      break
   }
 }
 
@@ -62,6 +64,15 @@ export function UPDATE_JUDGE_RIGHT (state, { judge, index, oneRight }) {
 }
 
 export function UPDATE_DECISION_RIGHT (state, { decision, index, oneRight }) {
+  if (!decision.uuid) {
+    Vue.set(decision, 'uuid', 'tmp-assign' + Math.random())
+  }
+  if (!decision.type) {
+    Vue.set(decision, 'type', 'assign')
+  }
+  if (!decision.right) {
+    Vue.set(decision, 'right', [])
+  }
   let rightArray = decision.right
   Vue.set(rightArray, index, oneRight)
 }
@@ -90,6 +101,10 @@ export function ADD_DECISION_ROW (state, { decision }) {
 }
 
 export function MOVE_CONDITION_INDEX (state, { index, left }) {
+  let headConditions = state.head.conditions
+  let movedHeadConditions = headConditions.splice(index, 1)
+  headConditions.splice(left ? (index - 1) : (index + 1), 0, ...movedHeadConditions)
+
   let contents = state.content
   for (let i = 0; i < contents.length; i++) {
     let conditions = contents[i].conditions
@@ -103,6 +118,10 @@ export function MOVE_CONDITION_INDEX (state, { index, left }) {
 }
 
 export function MOVE_DECISION_INDEX (state, { index, left }) {
+  let headDecisions = state.head.decisions
+  let movedHeadDecisions = headDecisions.splice(index, 1)
+  headDecisions.splice(left ? (index - 1) : (index + 1), 0, ...movedHeadDecisions)
+
   let contents = state.content
   for (let i = 0; i < contents.length; i++) {
     let decisions = contents[i].decisions
@@ -116,41 +135,44 @@ export function MOVE_DECISION_INDEX (state, { index, left }) {
 }
 
 export function APPEND_NEW_CONDITION (state, obj) {
+  state.head.conditions.push(obj)
+
   let contents = state.content
   for (let i = 0; i < contents.length; i++) {
     let conditions = contents[i].conditions
-    if (i === 0) {
-      conditions.push({
-        uuid: 'tmp-condition' + Math.random(),
-        type: 'condition',
-        logic: 'and',
-        children: [
-          {
-            uuid: 'tmp-judge' + Math.random(),
-            type: 'judge',
-            left: obj,
-            judgement: '请选择',
-            right: [
-              { type: 'unknow' }
-            ]
-          }
-        ]
-      })
-    } else {
-      conditions.push({})
-    }
+    conditions.push({})
   }
 }
 
 export function APPEND_NEW_ASSIGN (state, obj) {
+  state.head.decisions.push(obj)
   let contents = state.content
   for (let i = 0; i < contents.length; i++) {
     let decisions = contents[i].decisions
-    decisions.push({
-      uuid: 'tmp-assign' + Math.random(),
-      type: 'assign',
-      left: obj,
-      right: [{ type: 'unknow' }]
-    })
+    decisions.push({})
+  }
+}
+
+export function REMOVE_ONE_OUTER_DECISION (state, { index }) {
+  state.content.splice(index, 1)
+}
+
+export function REMOVE_CONDITION (state, { index }) {
+  let headCs = state.head.conditions
+  headCs.splice(index, 1)
+  let contents = state.content
+  for (let i = 0; i < contents.length; i++) {
+    let conditions = contents[i].conditions
+    conditions.splice(index, 1)
+  }
+}
+
+export function REMOVE_ASSIGN (state, { index }) {
+  let headDs = state.head.decisions
+  headDs.splice(index, 1)
+  let contents = state.content
+  for (let i = 0; i < contents.length; i++) {
+    let decisions = contents[i].decisions
+    decisions.splice(index, 1)
   }
 }

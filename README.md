@@ -98,6 +98,10 @@
 {
   "type":     "decisionRule", // 类型：决策表规则
   "uuid":     "",             // 规则的uuid
+  "head":     {
+    "conditions": [],         // 表头条件
+    "decisions": []           // 表头决策
+  },                          // 表头信息
   "content":  []              // 决策decision数组
 }
 ```

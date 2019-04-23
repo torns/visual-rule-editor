@@ -5,5 +5,9 @@ export default {
   activities: [], // 规则
   else: [], // 否则动作
 
+  head: {
+    conditions: [],
+    decisions: []
+  }, // 决策表表头信息
   content: [] //  决策表决策数组
 }
