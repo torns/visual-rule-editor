@@ -14,7 +14,7 @@
                 <q-item-label>添加条件</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item v-if="changeToSingleLine" clickable>
+            <q-item v-if="changeToSingleLine" clickable @click="() => { $emit('change-to-judge') }">
               <q-item-section>
                 <q-item-label>转为单个条件</q-item-label>
               </q-item-section>
@@ -25,8 +25,16 @@
     </div>
     <div class="column q-gutter-lg">
       <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="col">
-        <div class="row hover-show-parent">
-          <colored-selection :is-left="true" :current-judge="judge" />
+        <div v-if="judge.type == 'judge'" class="row hover-show-parent">
+          <span class="hover-show cursor-pointer float-left" @click="changeToCondition(ji)">
+            <q-icon name="transform" color="teal-7" style="margin-top: 10px">
+              <q-tooltip>
+                转为组合条件
+              </q-tooltip>
+            </q-icon>
+          </span>
+
+          <colored-selection is-left :current-judge="judge" />
           <judgement-operator :judge="judge"/>
 
           <operator-right-selection-wrap
@@ -45,6 +53,9 @@
               </q-tooltip>
             </q-icon>
           </span>
+        </div>
+        <div v-if="judge.type == 'condition'" class="row">
+          <condition-editor-wrap :main-left-uuid="mainLeftUuid" :condition="judge" change-to-single-line @change-to-judge="() => {changeToJudge(ji)}"/>
         </div>
       </div>
     </div>
@@ -113,6 +124,12 @@ export default {
         }
       }
       this.$store.commit('rule/ADD_CONDITION_CHILD', { condition: this.condition, child })
+    },
+    changeToCondition (judgeIndex) {
+      this.$store.commit('rule/CHANGE_JUDGE_TO_CONDITION', { condition: this.condition, judgeIndex })
+    },
+    changeToJudge (judgeIndex) {
+      this.$store.commit('rule/CHANGE_CONDITION_TO_JUDGE', { condition: this.condition, judgeIndex })
     }
   }
 }

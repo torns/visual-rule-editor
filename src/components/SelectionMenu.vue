@@ -12,11 +12,11 @@
         <q-menu anchor="top right" self="top left">
           <q-list>
             <template v-for="v in values">
-              <q-item dense clickable :key="'value:' + v.uuid">
+              <q-item v-if="withoutMethods || !v.methods || filteredMethods(v.methods).length == 0" dense clickable :key="'value:' + v.uuid">
                 <q-item-section @click="objClicked(v)">{{ v.display }}</q-item-section>
               </q-item>
-              <q-item v-if="v.methods && filteredMethods(v.methods).length > 0" dense clickable :key="'valueMethods:' + v.uuid">
-                <q-item-section>{{ v.display }}的方法</q-item-section>
+              <q-item v-if="!withoutMethods && v.methods && filteredMethods(v.methods).length > 0" dense clickable :key="'valueMethods:' + v.uuid">
+                <q-item-section @click="objClicked(v)">{{ v.display }}</q-item-section>
                 <q-item-section side >
                   <q-icon name="keyboard_arrow_right" />
                   <q-menu anchor="top right" self="top left">
@@ -40,11 +40,11 @@
         <q-menu anchor="top right" self="top left">
           <q-list>
             <template v-for="v in variables">
-              <q-item dense clickable :key="'value:' + v.uuid">
+              <q-item v-if="withoutMethods || !v.methods || filteredMethods(v.methods).length == 0" dense clickable :key="'value:' + v.uuid">
                 <q-item-section @click="objClicked(v)">{{ v.display }}</q-item-section>
               </q-item>
-              <q-item v-if="v.methods && filteredMethods(v.methods).length > 0" dense clickable :key="'valueMethods:' + v.uuid">
-                <q-item-section>{{ v.display }}的方法</q-item-section>
+              <q-item v-if="!withoutMethods && v.methods && filteredMethods(v.methods).length > 0" dense clickable :key="'valueMethods:' + v.uuid">
+                <q-item-section @click="objClicked(v)">{{ v.display }}</q-item-section>
                 <q-item-section side >
                   <q-icon name="keyboard_arrow_right" />
                   <q-menu anchor="top right" self="top left">
@@ -84,6 +84,7 @@ export default {
   props: {
     valueType: String,
     canInput: Boolean,
+    withoutMethods: Boolean,
     extInfo: Object
   },
   data () {

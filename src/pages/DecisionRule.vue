@@ -3,10 +3,10 @@
     <div class="row">
       <div class="col q-gutter-md">
         <q-btn color="deep-orange" icon="add_circle_outline" label="增加条件">
-          <selection-menu @item-selected="addCondition"/>
+          <selection-menu @item-selected="addCondition" without-methods/>
         </q-btn>
         <q-btn color="purple" icon="add" label="增加赋值">
-          <selection-menu @item-selected="addAssign"/>
+          <selection-menu @item-selected="addAssign" without-methods/>
         </q-btn>
       </div>
     </div>
@@ -293,10 +293,14 @@ export default {
   },
   methods: {
     addCondition (v) {
-      this.$store.dispatch('rule/addCondition', { type: 'object', uuid: v.uuid })
+      if (!this.$store.getters['rule/decisionConditionFieldUuids'].includes(v.uuid)) {
+        this.$store.dispatch('rule/addCondition', { type: 'object', uuid: v.uuid })
+      }
     },
     addAssign (v) {
-      this.$store.dispatch('rule/addAssign', { type: 'object', uuid: v.uuid })
+      if (!this.$store.getters['rule/decisionAssignUuids'].includes(v.uuid)) {
+        this.$store.dispatch('rule/addAssign', { type: 'object', uuid: v.uuid })
+      }
     },
     addRow () {
       this.$store.dispatch('rule/addDecision')

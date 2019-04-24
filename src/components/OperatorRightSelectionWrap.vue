@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper row hover-show-parent">
-    <div v-if="!rightArray" class="text-accent cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
+    <div v-if="!rightArray || rightArray.length == 0" class="text-accent cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
       请选择
       <selection-menu v-if="!onlyShow" :value-type="neededValueType" :ext-info="{ rightIndex: 0 }" can-input @item-selected="itemSelected"/>
     </div>

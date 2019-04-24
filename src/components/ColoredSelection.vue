@@ -1,7 +1,7 @@
 <template>
   <span :class="['text-' + coloredDisplay.color, wrapClass]" class="cursor-pointer">
     {{coloredDisplay.display}}
-    <selection-menu v-if="currentJudge" @item-selected="itemSelected"/>
+    <selection-menu v-if="currentJudge" @item-selected="itemSelected" :without-methods="isLeft" />
   </span>
 </template>
 

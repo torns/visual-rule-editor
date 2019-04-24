@@ -176,3 +176,26 @@ export function REMOVE_ASSIGN (state, { index }) {
     decisions.splice(index, 1)
   }
 }
+
+export function CHANGE_JUDGE_TO_CONDITION (state, { condition, judgeIndex }) {
+  condition.children.splice(judgeIndex, 1, {
+    uuid: 'tmp-condition' + Math.random(),
+    type: 'condition',
+    logic: 'and',
+    children: []
+  })
+}
+
+export function CHANGE_CONDITION_TO_JUDGE (state, { condition, judgeIndex }) {
+  condition.children.splice(judgeIndex, 1, {
+    uuid: 'tmp-judge' + Math.random(),
+    type: 'judge',
+    left: {
+      type: 'unknow'
+    },
+    judgement: '',
+    right: [{
+      'type': 'unknow'
+    }]
+  })
+}
