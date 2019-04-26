@@ -1,10 +1,12 @@
 <template>
   <div :class="wrapClass" class="cursor-pointer">
     <div style="min-width: 15px;min-height: 20px" :class="{'bg-green-2' : !stringTyped.text}">
-      {{ stringTyped.text }}
-      <q-popup-edit :value="stringTyped.text" buttons >
-        <q-input :value="stringTyped.text" dense autofocus @input="(v) => { $store.commit('rule/UPDATE_STRING_TEXT', { obj: stringTyped, value: v }) }"/>
+
+      {{ text }}
+      <q-popup-edit v-model="text" @save="saveValue" buttons :validate="validateValue">
+        <q-input v-model="text" dense autofocus counter :error="error" :error-message="errorMessage"/>
       </q-popup-edit>
+
     </div>
   </div>
 </template>
@@ -14,9 +16,39 @@ export default {
   name: 'EditableStringText',
   props: {
     stringTyped: Object,
+    needValueType: {
+      type: String,
+      default: 'string'
+    },
     wrapClass: {
       type: String,
       default: 'q-pa-sm'
+    }
+  },
+  data () {
+    return {
+      error: false,
+      errorMessage: '',
+      text: ''
+    }
+  },
+  mounted () {
+    this.text = this.stringTyped.text
+  },
+  methods: {
+    validateValue (v) {
+      let b = this.$inputValueTypeValidation(this.needValueType)(v)
+      if (b) {
+        this.error = false
+        this.errorMessage = ''
+      } else {
+        this.error = true
+        this.errorMessage = '请输入合法的值'
+      }
+      return b
+    },
+    saveValue (v, ov) {
+      this.$store.commit('rule/UPDATE_STRING_TEXT', { obj: this.stringTyped, value: v })
     }
   }
 }

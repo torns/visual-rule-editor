@@ -11,7 +11,7 @@
               选择其他
             </q-tooltip>
           </q-icon>
-          <editable-string-text  :string-typed="getParam(methodParamIndexes[i] - 1)" wrap-class="q-px-sm"/>
+          <editable-string-text  :string-typed="getParam(methodParamIndexes[i] - 1)" :need-value-type="getParamValueType(methodParamIndexes[i] - 1)" wrap-class="q-px-sm"/>
         </div>
         <div v-if="getParam(methodParamIndexes[i] - 1) && getParam(methodParamIndexes[i] - 1).type == 'object'" class="cursor-pointer">
           <span v-if="getParam(methodParamIndexes[i] - 1).uuid" :class="['text-' + getObjectColoredDisplay(getParam(methodParamIndexes[i] - 1).uuid).color]" >

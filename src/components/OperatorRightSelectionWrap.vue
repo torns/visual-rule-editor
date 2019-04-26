@@ -25,7 +25,7 @@
         <selection-menu :value-type="neededValueType" :ext-info="{ rightIndex: i }" can-input @item-selected="itemSelected"/>
       </div>
       <!-- 变量为直接输入字符串 -->
-      <editable-string-text v-if="r.type === 'string'" :string-typed="r" :wrap-class="textWrapClass"/>
+      <editable-string-text v-if="r.type === 'string'" :string-typed="r" :wrap-class="textWrapClass" :need-value-type="neededValueType"/>
       <!-- 变量为对象 -->
       <div v-if="r.type == 'object'" class="cursor-pointer" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
         <span v-if="r.uuid" :class="['text-' + getObjectColoredDisplay(r.uuid).color]" >
@@ -39,6 +39,10 @@
       <!-- 变量为方法 -->
       <div v-if="r.type == 'method'" class="cursor-pointer"  :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
         <method-displayer :method="r" :only-show="onlyShow"/>
+      </div>
+      <!-- 变量不支持，显示text -->
+      <div v-if="r.type == 'unsupport'" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
+        {{r.text}}
       </div>
     </div>
     <div v-if="showSymbolLink" class="hover-show cursor-pointer">

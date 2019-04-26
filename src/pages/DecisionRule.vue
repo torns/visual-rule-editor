@@ -23,7 +23,7 @@
                 <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionConditionFieldUuids'].length - 1" @click="conditionMoveRight(index)">
                   <q-tooltip>后移</q-tooltip>
                 </q-icon>
-                <q-icon name="delete" class="hover-show cursor-pointer float-right" @click="removeCondition(index)">
+                <q-icon name="delete" class="hover-show cursor-pointer" @click="removeCondition(index)">
                   <q-tooltip>删除</q-tooltip>
                 </q-icon>
               </th>
@@ -35,7 +35,7 @@
                 <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionAssignUuids'].length - 1" @click="decisionMoveRight(index)">
                   <q-tooltip>后移</q-tooltip>
                 </q-icon>
-                <q-icon name="delete" class="hover-show cursor-pointer float-right" @click="removeDecision(index)">
+                <q-icon name="delete" class="hover-show cursor-pointer" @click="removeDecision(index)">
                   <q-tooltip>删除</q-tooltip>
                 </q-icon>
               </th>
@@ -233,6 +233,41 @@ export default {
                 }]
               }
             ]
+          },
+          {
+            'conditions': [
+              {
+                'uuid': 'c3',
+                'type': 'unsupport',
+                'text': '暂未支持的整体条件展示'
+              },
+              {
+                'uuid': 'c4',
+                'type': 'condition',
+                'logic': 'and',
+                'children': [
+                  {
+                    'uuid': 'c4j1',
+                    'type': 'judge',
+                    'left': {
+                      'type': 'object',
+                      'uuid': 'aaaaaaaaaa'
+                    },
+                    'judgement': '>',
+                    'right': [{
+                      'type': 'unsupport',
+                      'text': '暂未支持的条件判断展示'
+                    }]
+                  }
+                ]
+              }
+            ],
+            'decisions': [
+              {
+                'type': 'unsupport',
+                'text': '暂不支持的赋值信息展示'
+              }
+            ]
           }
         ]
       },
@@ -318,13 +353,49 @@ export default {
       this.$store.dispatch('rule/moveDecision', { index, left: false })
     },
     removeCondition (index) {
-      this.$store.dispatch('rule/removeCondition', { index })
+      this.$q.dialog({
+        title: '确认删除',
+        message: '确认删除该条件吗?',
+        ok: {
+          push: true
+        },
+        cancel: {
+          color: 'negative'
+        },
+        persistent: true
+      }).onOk(() => {
+        this.$store.dispatch('rule/removeCondition', { index })
+      })
     },
     removeDecision (index) {
-      this.$store.dispatch('rule/removeDecision', { index })
+      this.$q.dialog({
+        title: '确认删除',
+        message: '确认删除该赋值吗?',
+        ok: {
+          push: true
+        },
+        cancel: {
+          color: 'negative'
+        },
+        persistent: true
+      }).onOk(() => {
+        this.$store.dispatch('rule/removeDecision', { index })
+      })
     },
     removeRow (index) {
-      this.$store.dispatch('rule/removeRow', { index })
+      this.$q.dialog({
+        title: '确认删除',
+        message: '确认删除该行吗?',
+        ok: {
+          push: true
+        },
+        cancel: {
+          color: 'negative'
+        },
+        persistent: true
+      }).onOk(() => {
+        this.$store.dispatch('rule/removeRow', { index })
+      })
     },
     inputRule () {
       this.$store.dispatch('rule/setRule', JSON.parse(this.ruleTextTmp))

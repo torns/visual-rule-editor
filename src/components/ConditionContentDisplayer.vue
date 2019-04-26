@@ -2,7 +2,9 @@
   <div class="row">
     <div v-for="(judge, index) in condition.children" :key="judge.uuid" class="row">
       <span v-if="index > 0" class="q-pa-xs">{{ condition.logic == 'and' ? '并且' : '或者' }}</span>
-
+      <div v-if="judge.type == 'unsupport'" >
+        {{judge.text}}
+      </div>
       <div v-if="judge.type == 'judge'" class="row">
         <colored-selection v-if="mainLeftUuid != judge.left.uuid" :obj="judge.left" :current-judge="judge" is-left wrap-class="q-pa-xs"/>
 

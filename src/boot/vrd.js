@@ -116,4 +116,36 @@ export default ({ app, router, Vue }) => {
     }
     return result
   }
+  Vue.prototype.$inputValueTypeValidation = function (valueType) {
+    switch (valueType) {
+      case 'byte':
+        return function (v) {
+          return v >= -128 && v <= 127
+        }
+      case 'short':
+        return function (v) {
+          return v >= -32768 && v <= 32767
+        }
+      case 'int':
+        return function (v) {
+          return v >= -2147483648 && v <= 2147483647
+        }
+      case 'long':
+        return function (v) {
+          return v >= -9223372036854775808 && v <= 9223372036854775807
+        }
+      case 'float':
+        return function (v) {
+          return v >= 1.4E-45 && v <= 3.4028235E38
+        }
+      case 'double':
+        return function (v) {
+          return v >= 4.9E-324 && v <= 1.7976931348623157E308
+        }
+      default:
+        return function (v) {
+          return true
+        }
+    }
+  }
 }

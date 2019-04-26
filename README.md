@@ -44,6 +44,15 @@
 }
 ```
 
+## 暂不支持的类型 - 直接文本显示
+```json
+{
+  "uuid":     "uuid",       // uuid
+  "type":     "unsupport",  // 类型：不支持
+  "text":     ""            // 显示的字符串
+}
+```
+
 ## method 方法
 ```json
 {

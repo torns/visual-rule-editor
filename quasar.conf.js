@@ -78,7 +78,8 @@ module.exports = function (ctx) {
       ],
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'Dialog'
       ]
       // iconSet: 'material-icons'
       // lang: 'de' // Quasar language

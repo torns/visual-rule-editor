@@ -25,26 +25,31 @@
     </div>
     <div class="column q-gutter-lg">
       <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="col">
-        <div v-if="judge.type == 'judge'" class="row hover-show-parent">
-          <span class="hover-show cursor-pointer float-left" @click="changeToCondition(ji)">
-            <q-icon name="transform" color="teal-7" style="margin-top: 10px">
-              <q-tooltip>
-                转为组合条件
-              </q-tooltip>
-            </q-icon>
-          </span>
+        <div v-if="judge.type == 'unsupport'">
+          {{judge.text}}
+        </div>
+        <div v-if="judge.type == 'judge'" class="row">
+          <div class="row hover-show-parent">
+            <span class="hover-show cursor-pointer float-left" @click="changeToCondition(ji)">
+              <q-icon name="transform" color="teal-7" style="margin-top: 10px">
+                <q-tooltip>
+                  转为组合条件
+                </q-tooltip>
+              </q-icon>
+            </span>
 
-          <colored-selection is-left :current-judge="judge" />
-          <judgement-operator :judge="judge"/>
+            <colored-selection is-left :current-judge="judge" />
+            <judgement-operator :judge="judge"/>
 
-          <operator-right-selection-wrap
-            v-if="$judgementHasRight(judge)"
-            :needed-value-type="$store.getters['env/findObject'](mainLeftUuid).valueType"
-            :right-array="judge.right"
-            :ext-info="{judgeIndex: ji}"
-            @symbol-selected="symbolSelected"
-            @symbol-remove="symbolRemove"
-            @item-selected="itemSelected"/>
+            <operator-right-selection-wrap
+              v-if="$judgementHasRight(judge)"
+              :needed-value-type="$store.getters['env/findObject'](mainLeftUuid).valueType"
+              :right-array="judge.right"
+              :ext-info="{judgeIndex: ji}"
+              @symbol-selected="symbolSelected"
+              @symbol-remove="symbolRemove"
+              @item-selected="itemSelected"/>
+          </div>
 
           <span class="hover-show cursor-pointer float-right" @click="removeJudge(ji)">
             <q-icon name="delete" color="negative" style="margin-top: 10px;">

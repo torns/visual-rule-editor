@@ -5,7 +5,8 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/DecisionRule.vue') },
-      { path: 'rule', component: () => import('pages/BasicRule.vue') }
+      { path: 'decision', component: () => import('pages/DecisionRule.vue') },
+      { path: 'basic', component: () => import('pages/BasicRule.vue') }
     ]
   }
 ]
