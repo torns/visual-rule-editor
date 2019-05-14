@@ -40,10 +40,10 @@
       <div v-if="r.type == 'method'" class="cursor-pointer"  :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
         <method-displayer :method="r" :only-show="onlyShow"/>
       </div>
-      <!-- 变量不支持，显示text -->
-      <div v-if="r.type == 'unsupport'" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
+      <editable-expression v-if="r.type == 'expression'" :expression="r" :wrap-class="textWrapClass"/>
+      <!-- <div v-if="r.type == 'expression'" :class="{'fix-padding-top-table': inTable, 'fix-padding-top': !inTable}">
         {{r.text}}
-      </div>
+      </div> -->
     </div>
     <div v-if="showSymbolLink" class="hover-show cursor-pointer">
       <q-icon name="usb" class="fix-top"/>
@@ -56,12 +56,13 @@ import EditableStringText from './EditableStringText'
 import SelectionMenu from './SelectionMenu'
 import SymbolMenu from './SymbolMenu'
 import MethodDisplayer from './MethodDisplayer'
-
+import EditableExpression from './EditableExpression'
 export default {
   name: 'OperatorRightSelectionWrap',
   components: {
     SelectionMenu,
     SymbolMenu,
+    EditableExpression,
     EditableStringText,
     MethodDisplayer
   },

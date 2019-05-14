@@ -1,6 +1,9 @@
 <template>
   <div class="row items-center q-gutter-x-lg">
-    <div>
+    <div v-if="condition.type == 'expression'">
+      <editable-expression :expression="condition" />
+    </div>
+    <div v-if="condition.type == 'condition'">
       <q-btn :label="condition.logic == 'and' ? '并且' : '或者'">
         <q-menu auto-close>
           <q-list>
@@ -25,9 +28,7 @@
     </div>
     <div class="column q-gutter-lg">
       <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="col">
-        <div v-if="judge.type == 'unsupport'">
-          {{judge.text}}
-        </div>
+        <editable-expression v-if="judge.type == 'expression'" :expression="judge" />
         <div v-if="judge.type == 'judge'" class="row">
           <div class="row hover-show-parent">
             <span class="hover-show cursor-pointer float-left" @click="changeToCondition(ji)">
@@ -71,11 +72,13 @@
 import ColoredSelection from './ColoredSelection'
 import JudgementOperator from './JudgementOperator'
 import OperatorRightSelectionWrap from './OperatorRightSelectionWrap'
+import EditableExpression from './EditableExpression'
 export default {
   name: 'ConditionEditorWrap',
   components: {
     ColoredSelection,
     JudgementOperator,
+    EditableExpression,
     OperatorRightSelectionWrap
   },
   props: {

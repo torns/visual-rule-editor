@@ -1,9 +1,8 @@
 <template>
   <div class="row justify-center">
     &nbsp;
-   <div v-if="condition.type == 'unsupport'">
-      {{condition.text}}
-    </div>
+    <editable-expression v-if="condition.type == 'expression'" :expression="condition" />
+
     <div v-if="condition.type == 'condition'" class="row justify-center">
       <condition-content-displayer :condition="condition" :main-left-uuid="mainLeftUuid" />
 
@@ -35,11 +34,13 @@
 <script>
 import ConditionEditorWrap from './ConditionEditorWrap'
 import ConditionContentDisplayer from './ConditionContentDisplayer'
+import EditableExpression from './EditableExpression'
 
 export default {
   name: 'EditableCondition',
   components: {
     ConditionEditorWrap,
+    EditableExpression,
     ConditionContentDisplayer
   },
   props: {

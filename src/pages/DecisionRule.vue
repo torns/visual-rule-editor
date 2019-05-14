@@ -238,8 +238,8 @@ export default {
             'conditions': [
               {
                 'uuid': 'c3',
-                'type': 'unsupport',
-                'text': '暂未支持的整体条件展示'
+                'type': 'expression',
+                'text': '表达式的整体条件展示'
               },
               {
                 'uuid': 'c4',
@@ -255,8 +255,8 @@ export default {
                     },
                     'judgement': '>',
                     'right': [{
-                      'type': 'unsupport',
-                      'text': '暂未支持的条件判断展示'
+                      'type': 'expression',
+                      'text': '表达式条件判断展示'
                     }]
                   }
                 ]
@@ -264,8 +264,18 @@ export default {
             ],
             'decisions': [
               {
-                'type': 'unsupport',
-                'text': '暂不支持的赋值信息展示'
+                'uuid': 'aa1',
+                'type': 'assign',
+                'left': {
+                  'type': 'object',
+                  'uuid': 'ttttttttttttttt'
+                },
+                'right': [
+                  {
+                    'type': 'expression',
+                    'text': '表达式赋值信息展示'
+                  }
+                ]
               }
             ]
           }

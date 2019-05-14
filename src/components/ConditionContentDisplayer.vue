@@ -2,9 +2,9 @@
   <div class="row">
     <div v-for="(judge, index) in condition.children" :key="judge.uuid" class="row">
       <span v-if="index > 0" class="q-pa-xs">{{ condition.logic == 'and' ? '并且' : '或者' }}</span>
-      <div v-if="judge.type == 'unsupport'" >
-        {{judge.text}}
-      </div>
+
+      <editable-expression v-if="judge.type == 'expression'" :expression="judge" />
+
       <div v-if="judge.type == 'judge'" class="row">
         <colored-selection v-if="mainLeftUuid != judge.left.uuid" :obj="judge.left" :current-judge="judge" is-left wrap-class="q-pa-xs"/>
 
@@ -38,12 +38,13 @@
 import ColoredSelection from './ColoredSelection'
 import JudgementOperator from './JudgementOperator'
 import OperatorRightSelectionWrap from './OperatorRightSelectionWrap'
-
+import EditableExpression from './EditableExpression'
 export default {
   name: 'ConditionContentDisplayer',
   components: {
     ColoredSelection,
     JudgementOperator,
+    EditableExpression,
     OperatorRightSelectionWrap
   },
   props: {

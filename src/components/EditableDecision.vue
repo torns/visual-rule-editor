@@ -1,9 +1,8 @@
 <template>
   <div class="row justify-center">
     &nbsp;
-    <div v-if="decision.type == 'unsupport'">
-      {{decision.text}}
-    </div>
+    <editable-expression v-if="decision.type == 'expression'" :expression="decision" />
+
     <div v-if="decision.type == 'assign'">
       <div>
         <colored-selection v-if="decision.left && mainDecisionUuid != decision.left.uuid" :obj="decision.left" class="q-pa-xs"/>
@@ -43,12 +42,14 @@
 <script>
 import DecisionEditorWrap from './DecisionEditorWrap'
 import ColoredSelection from './ColoredSelection'
+import EditableExpression from './EditableExpression'
 import OperatorRightSelectionWrap from './OperatorRightSelectionWrap'
 export default {
   name: 'EditableDecision',
   components: {
     DecisionEditorWrap,
     ColoredSelection,
+    EditableExpression,
     OperatorRightSelectionWrap
   },
   props: {

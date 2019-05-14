@@ -39,6 +39,10 @@ export function UPDATE_STRING_TEXT (state, { obj, value }) {
   Vue.set(obj, 'text', value)
 }
 
+export function UPDATE_EXPRESSION_TEXT (state, { exp, value }) {
+  Vue.set(exp, 'text', value)
+}
+
 export function ADD_CONDITION_CHILD (state, { condition, child }) {
   if (!condition.uuid || condition.uuid === '') {
     Vue.set(condition, 'uuid', 'tmp-condition' + Math.random())
