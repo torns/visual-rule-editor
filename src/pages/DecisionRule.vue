@@ -15,24 +15,24 @@
         <q-markup-table class="text-center">
           <thead>
             <tr>
-              <th v-for="(field, index) in $store.getters['rule/decisionConditionFieldUuids']" :key="field" class="hover-show-parent">
+              <th v-for="(field, index) in decisionConditionFieldUuids" :key="field" class="hover-show-parent">
                 <q-icon name="chevron_left" size="1.5rem" class="cursor-pointer hover-show" v-if="index != 0" @click="conditionMoveLeft(index)">
                   <q-tooltip>前移</q-tooltip>
                 </q-icon>
-                {{ $store.getters['env/getObjectDisplayName'](field).display }}
-                <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionConditionFieldUuids'].length - 1" @click="conditionMoveRight(index)">
+                {{ getObjectDisplayName(field) }}
+                <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != decisionConditionFieldUuids.length - 1" @click="conditionMoveRight(index)">
                   <q-tooltip>后移</q-tooltip>
                 </q-icon>
                 <q-icon name="delete" class="hover-show cursor-pointer" @click="removeCondition(index)">
                   <q-tooltip>删除</q-tooltip>
                 </q-icon>
               </th>
-              <th v-for="(decision, index) in $store.getters['rule/decisionAssignUuids']" :key="decision" class="hover-show-parent" :style="{'border-left': index == 0 ? '1px solid rgba(0,0,0,0.12)' : 0}">
+              <th v-for="(decision, index) in decisionAssignUuids" :key="decision" class="hover-show-parent" :style="{'border-left': index == 0 ? '1px solid rgba(0,0,0,0.12)' : 0}">
                 <q-icon name="chevron_left" size="1.5rem" class="cursor-pointer hover-show" v-if="index != 0" @click="decisionMoveLeft(index)">
                   <q-tooltip>前移</q-tooltip>
                 </q-icon>
-                {{  $store.getters['env/getObjectDisplayName'](decision).display }}
-                <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != $store.getters['rule/decisionAssignUuids'].length - 1" @click="decisionMoveRight(index)">
+                {{  getObjectDisplayName(decision) }}
+                <q-icon name="chevron_right" size="1.5rem" class="cursor-pointer hover-show" v-if="index != decisionAssignUuids.length - 1" @click="decisionMoveRight(index)">
                   <q-tooltip>后移</q-tooltip>
                 </q-icon>
                 <q-icon name="delete" class="hover-show cursor-pointer" @click="removeDecision(index)">
@@ -43,11 +43,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(content, ci) in $store.getters['rule/ruleContents']" :key="content.uuid">
-              <td v-for="(j, i) in $store.getters['rule/decisionConditionFieldUuids']" :key="j">
+            <tr v-for="(content, ci) in ruleContents" :key="content.uuid">
+              <td v-for="(j, i) in decisionConditionFieldUuids" :key="j">
                 <editable-condition :condition="content.conditions[i]" :main-left-uuid="j" />
               </td>
-              <td v-for="(d, i) in $store.getters['rule/decisionAssignUuids']" :key="d" :style="{'border-left': i == 0 ? '1px solid rgba(0,0,0,0.12)' : 0}">
+              <td v-for="(d, i) in decisionAssignUuids" :key="d" :style="{'border-left': i == 0 ? '1px solid rgba(0,0,0,0.12)' : 0}">
                 <editable-decision :decision="content.decisions[i]" :main-decision-uuid="d"/>
               </td>
               <td class="hover-show-parent">
@@ -317,6 +317,15 @@ export default {
     }
   },
   computed: {
+    decisionConditionFieldUuids () {
+      return this.$store.getters['rule/decisionConditionFieldUuids']
+    },
+    decisionAssignUuids () {
+      return this.$store.getters['rule/decisionAssignUuids']
+    },
+    ruleContents () {
+      return this.$store.state.rule.content
+    },
     ruleText: {
       get () {
         return JSON.stringify(this.$store.state.rule, null, 2)
@@ -327,13 +336,16 @@ export default {
     }
   },
   methods: {
+    getObjectDisplayName (obj) {
+      return this.$store.getters['env/getObjectDisplayName'](obj).display
+    },
     addCondition (v) {
       if (!this.$store.getters['rule/decisionConditionFieldUuids'].includes(v.uuid)) {
         this.$store.dispatch('rule/addCondition', { type: 'object', uuid: v.uuid })
       }
     },
     addAssign (v) {
-      if (!this.$store.getters['rule/decisionAssignUuids'].includes(v.uuid)) {
+      if (!this.decisionAssignUuids.includes(v.uuid)) {
         this.$store.dispatch('rule/addAssign', { type: 'object', uuid: v.uuid })
       }
     },

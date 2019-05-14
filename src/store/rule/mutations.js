@@ -35,7 +35,8 @@ export function UPDATE_JUDGE_JUDGEMENT (state, { judge, judgement, noRight }) {
 }
 
 export function UPDATE_STRING_TEXT (state, { obj, value }) {
-  obj.text = value
+  // obj.text = value
+  Vue.set(obj, 'text', value)
 }
 
 export function ADD_CONDITION_CHILD (state, { condition, child }) {

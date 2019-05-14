@@ -2,9 +2,6 @@
 export function someGetter (state) {
 }
 */
-export function ruleContents (state) {
-  return state.content
-}
 
 export function ruleCondition (state) {
   return (contentIndex, conditionIndex) => {
