@@ -28,12 +28,18 @@ export default {
   data () {
     return {
       error: false,
-      errorMessage: '',
-      text: ''
+      errorMessage: ''
     }
   },
-  mounted () {
-    this.text = this.stringTyped.text
+  computed: {
+    text: {
+      get () {
+        return this.stringTyped.text
+      },
+      set (v) {
+        this.$store.commit('rule/UPDATE_STRING_TEXT', { obj: this.stringTyped, value: v })
+      }
+    }
   },
   methods: {
     validateValue (v) {
