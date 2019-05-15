@@ -69,7 +69,17 @@
           type="textarea"
         />
       </div>
-      <q-btn color="primary" label="导入" @click="inputRule"/>
+      <q-btn color="primary" label="规则导入" @click="importRule"/>
+    </div>
+    <div class="row">
+      <div class="col">
+        <q-input
+          v-model="envText"
+          filled
+          type="textarea"
+        />
+      </div>
+      <q-btn color="primary" label="对象库导入" @click="importEnv"/>
     </div>
   </div>
 </template>
@@ -323,7 +333,8 @@ export default {
         'sheets': [],
         'trees': []
       },
-      ruleTextTmp: ''
+      ruleTextTmp: '',
+      envTextTmp: ''
     }
   },
   computed: {
@@ -342,6 +353,14 @@ export default {
       },
       set (ov, nv) {
         this.ruleTextTmp = nv
+      }
+    },
+    envText: {
+      get () {
+        return JSON.stringify(this.$store.state.env, null, 2)
+      },
+      set (ov, nv) {
+        this.envTextTmp = nv
       }
     }
   },
@@ -419,8 +438,11 @@ export default {
         this.$store.dispatch('rule/removeRow', { index })
       })
     },
-    inputRule () {
+    importRule () {
       this.$store.dispatch('rule/setRule', JSON.parse(this.ruleTextTmp))
+    },
+    importEnv () {
+      this.$store.dispatch('rule/setEnv', JSON.parse(this.envTextTmp))
     }
   },
   mounted () {
