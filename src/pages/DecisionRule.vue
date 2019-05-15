@@ -248,8 +248,15 @@ export default {
             'conditions': [
               {
                 'uuid': 'c3',
-                'type': 'expression',
-                'text': '表达式的整体条件展示'
+                'type': 'condition',
+                'logic': 'and',
+                'children': [
+                  {
+                    'uuid': 'c3j1',
+                    'type': 'expression',
+                    'text': '表达式的整体条件展示'
+                  }
+                ]
               },
               {
                 'uuid': 'c4',

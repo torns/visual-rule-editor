@@ -4,6 +4,9 @@
       <q-item v-if="canInput" clickable>
         <q-item-section @click="objClicked({type: 'string', text: ''})">输入值</q-item-section>
       </q-item>
+      <q-item v-if="canInput" clickable>
+        <q-item-section @click="objClicked({type: 'expression', text: ''})">表达式</q-item-section>
+      </q-item>
       <q-item clickable>
         <q-item-section>传递变量</q-item-section>
         <q-item-section side>

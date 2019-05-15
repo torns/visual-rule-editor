@@ -1,8 +1,5 @@
 <template>
   <div class="row items-center q-gutter-x-lg">
-    <div v-if="condition.type == 'expression'">
-      <editable-expression :expression="condition" />
-    </div>
     <div v-if="condition.type == 'condition'">
       <q-btn :label="condition.logic == 'and' ? '并且' : '或者'">
         <q-menu auto-close>
@@ -17,28 +14,19 @@
                 <q-item-label>添加条件</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item v-if="changeToSingleLine" clickable @click="() => { $emit('change-to-judge') }">
-              <q-item-section>
-                <q-item-label>转为单个条件</q-item-label>
-              </q-item-section>
-            </q-item>
           </q-list>
         </q-menu>
       </q-btn>
     </div>
     <div class="column q-gutter-lg">
-      <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="col">
+      <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="col hover-show-parent">
+        <span class="hover-show cursor-pointer float-left q-mr-xs" >
+          <q-icon name="transform" color="teal-7" style="margin-top: 10px" />
+          <condition-change-menu :type="judge.type" @change-to-condition="changeToCondition(ji)" @change-to-expression="changeToExpression(ji)" @change-to-judge="changeToJudge(ji)"/>
+        </span>
         <editable-expression v-if="judge.type == 'expression'" :expression="judge" />
         <div v-if="judge.type == 'judge'" class="row">
           <div class="row hover-show-parent">
-            <span class="hover-show cursor-pointer float-left" @click="changeToCondition(ji)">
-              <q-icon name="transform" color="teal-7" style="margin-top: 10px">
-                <q-tooltip>
-                  转为组合条件
-                </q-tooltip>
-              </q-icon>
-            </span>
-
             <colored-selection is-left :current-judge="judge" />
             <judgement-operator :judge="judge"/>
 
@@ -61,7 +49,7 @@
           </span>
         </div>
         <div v-if="judge.type == 'condition'" class="row">
-          <condition-editor-wrap :main-left-uuid="mainLeftUuid" :condition="judge" change-to-single-line @change-to-judge="() => {changeToJudge(ji)}"/>
+          <condition-editor-wrap :main-left-uuid="mainLeftUuid" :condition="judge" @change-to-judge="() => {changeToJudge(ji)}"/>
         </div>
       </div>
     </div>
@@ -73,21 +61,19 @@ import ColoredSelection from './ColoredSelection'
 import JudgementOperator from './JudgementOperator'
 import OperatorRightSelectionWrap from './OperatorRightSelectionWrap'
 import EditableExpression from './EditableExpression'
+import ConditionChangeMenu from './ConditionChangeMenu'
 export default {
   name: 'ConditionEditorWrap',
   components: {
     ColoredSelection,
     JudgementOperator,
     EditableExpression,
+    ConditionChangeMenu,
     OperatorRightSelectionWrap
   },
   props: {
     mainLeftUuid: String, // 主判断对象uuid
-    condition: Object,
-    changeToSingleLine: {
-      type: Boolean,
-      default: false
-    }
+    condition: Object
   },
   computed: {
     judges: {
@@ -138,6 +124,9 @@ export default {
     },
     changeToJudge (judgeIndex) {
       this.$store.commit('rule/CHANGE_CONDITION_TO_JUDGE', { condition: this.condition, judgeIndex })
+    },
+    changeToExpression (judgeIndex) {
+      this.$store.commit('rule/CHANGE_JUDGE_TO_EXPRESSION', { condition: this.condition, judgeIndex })
     }
   }
 }

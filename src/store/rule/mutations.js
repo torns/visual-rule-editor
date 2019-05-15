@@ -191,6 +191,14 @@ export function CHANGE_JUDGE_TO_CONDITION (state, { condition, judgeIndex }) {
   })
 }
 
+export function CHANGE_JUDGE_TO_EXPRESSION (state, { condition, judgeIndex }) {
+  condition.children.splice(judgeIndex, 1, {
+    uuid: 'tmp-expression' + Math.random(),
+    type: 'expression',
+    text: ''
+  })
+}
+
 export function CHANGE_CONDITION_TO_JUDGE (state, { condition, judgeIndex }) {
   condition.children.splice(judgeIndex, 1, {
     uuid: 'tmp-judge' + Math.random(),
