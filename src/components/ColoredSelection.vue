@@ -21,37 +21,38 @@ export default {
       default: 'q-pa-sm'
     }
   },
-  data: () => {
-    return {
-      coloredDisplay: {
+  computed: {
+    coloredDisplay () {
+      if (this.obj) {
+        if (this.obj.type === 'object') {
+          return this.$store.getters['env/getObjectDisplayName'](this.obj.uuid)
+        } else if (this.obj.type === 'string') {
+          return {
+            display: this.obj.text,
+            color: 'grey-10'
+          }
+        }
+      } else if (this.currentJudge) {
+        let currentObj = this.isLeft ? this.currentJudge.left : this.currentJudge.right
+        if (currentObj) {
+          if (currentObj.type === 'object') {
+            return this.$store.getters['env/getObjectDisplayName'](currentObj.uuid)
+          } else if (currentObj.type === 'string') {
+            return {
+              display: currentObj.text,
+              color: 'grey-10'
+            }
+          }
+        }
+      }
+      return {
         display: '请选择',
         color: 'red-10'
       }
     }
   },
   mounted () {
-    if (this.obj) {
-      if (this.obj.type === 'object') {
-        this.coloredDisplay = this.$store.getters['env/getObjectDisplayName'](this.obj.uuid)
-      } else if (this.obj.type === 'string') {
-        this.coloredDisplay = {
-          display: this.obj.text,
-          color: 'grey-10'
-        }
-      }
-    } else if (this.currentJudge) {
-      let currentObj = this.isLeft ? this.currentJudge.left : this.currentJudge.right
-      if (currentObj) {
-        if (currentObj.type === 'object') {
-          this.coloredDisplay = this.$store.getters['env/getObjectDisplayName'](currentObj.uuid)
-        } else if (currentObj.type === 'string') {
-          this.coloredDisplay = {
-            display: currentObj.text,
-            color: 'grey-10'
-          }
-        }
-      }
-    }
+
   },
   methods: {
     itemSelected (v) {
