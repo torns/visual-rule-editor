@@ -1,6 +1,6 @@
 <template>
   <div class="row items-center q-gutter-x-lg">
-    <div v-if="condition.type == 'condition'">
+    <div>
       <q-btn :label="condition.logic == 'and' ? '并且' : '或者'">
         <q-menu auto-close>
           <q-list>
