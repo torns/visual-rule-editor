@@ -27,7 +27,7 @@
         <editable-expression v-if="judge.type == 'expression'" :expression="judge" />
         <div v-if="judge.type == 'judge'" class="row">
           <div class="row hover-show-parent">
-            <colored-selection is-left :current-judge="judge" />
+            <colored-selection :obj="judge.left" is-left @selection-changed="(v) => {leftChanged(judge, v)}"/>
             <judgement-operator :judge="judge"/>
 
             <operator-right-selection-wrap
@@ -127,6 +127,17 @@ export default {
     },
     changeToExpression (judgeIndex) {
       this.$store.commit('rule/CHANGE_JUDGE_TO_EXPRESSION', { condition: this.condition, judgeIndex })
+    },
+    leftChanged (judge, v) {
+      let changeJudgement = false
+      if (judge.left.type === 'object') {
+        let leftObj = this.$store.getters['env/findObject'](v.uuid)
+        let objJudgements = this.$judgements4Type(leftObj.valueType)
+        if (!objJudgements.includes(judge.judgement)) {
+          changeJudgement = true
+        }
+      }
+      this.$store.commit('rule/UPDATE_JUDGE_LEFT', { judge, left: v, changeJudgement })
     }
   }
 }

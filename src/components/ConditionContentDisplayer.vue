@@ -6,7 +6,7 @@
       <editable-expression v-if="judge.type == 'expression'" :expression="judge" wrap-class="q-pa-xs"/>
 
       <div v-if="judge.type == 'judge'" class="row">
-        <colored-selection v-if="mainLeftUuid != judge.left.uuid" :obj="judge.left" :current-judge="judge" is-left wrap-class="q-pa-xs"/>
+        <colored-selection v-if="mainLeftUuid != judge.left.uuid" is-left :obj="judge.left" wrap-class="q-pa-xs" @selection-changed="(v) => {leftChanged(judge, v)}"/>
 
         <judgement-operator :judge="judge" wrap-class="q-pa-xs"/>
 
@@ -67,6 +67,17 @@ export default {
     itemSelected (rightIndex, v, extInfo) {
       let judgeIndex = extInfo ? (extInfo.judgeIndex) : 0
       this.$store.commit('rule/UPDATE_JUDGE_RIGHT', { judge: this.condition.children[judgeIndex], index: rightIndex, oneRight: v })
+    },
+    leftChanged (judge, v) {
+      let changeJudgement = false
+      if (judge.left.type === 'object') {
+        let leftObj = this.$store.getters['env/findObject'](v.uuid)
+        let objJudgements = this.$judgements4Type(leftObj.valueType)
+        if (!objJudgements.includes(judge.judgement)) {
+          changeJudgement = true
+        }
+      }
+      this.$store.commit('rule/UPDATE_JUDGE_LEFT', { judge, left: v, changeJudgement })
     }
   }
 }

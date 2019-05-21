@@ -1,7 +1,7 @@
 <template>
   <span :class="['text-' + coloredDisplay.color, wrapClass]" class="cursor-pointer">
     {{coloredDisplay.display}}
-    <selection-menu v-if="currentJudge" @item-selected="itemSelected" :without-methods="isLeft" />
+    <selection-menu @item-selected="itemSelected" :without-methods="isLeft" />
   </span>
 </template>
 
@@ -14,7 +14,6 @@ export default {
   },
   props: {
     obj: Object,
-    currentJudge: Object,
     isLeft: Boolean,
     wrapClass: {
       type: String,
@@ -32,18 +31,6 @@ export default {
             color: 'grey-10'
           }
         }
-      } else if (this.currentJudge) {
-        let currentObj = this.isLeft ? this.currentJudge.left : this.currentJudge.right
-        if (currentObj) {
-          if (currentObj.type === 'object') {
-            return this.$store.getters['env/getObjectDisplayName'](currentObj.uuid)
-          } else if (currentObj.type === 'string') {
-            return {
-              display: currentObj.text,
-              color: 'grey-10'
-            }
-          }
-        }
       }
       return {
         display: '请选择',
@@ -56,17 +43,7 @@ export default {
   },
   methods: {
     itemSelected (v) {
-      if (this.isLeft) {
-        let changeJudgement = false
-        if (this.currentJudge.left.type === 'object') {
-          let leftObj = this.$store.getters['env/findObject'](v.uuid)
-          let objJudgements = this.$judgements4Type(leftObj.valueType)
-          if (!objJudgements.includes(this.currentJudge.judgement)) {
-            changeJudgement = true
-          }
-        }
-        this.$store.commit('rule/UPDATE_JUDGE_LEFT', { judge: this.currentJudge, left: v, changeJudgement })
-      }
+      this.$emit('selection-changed', v)
     }
   }
 }

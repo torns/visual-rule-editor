@@ -218,10 +218,14 @@ export function CHANGE_CONDITION_TO_JUDGE (state, { condition, judgeIndex }) {
   })
 }
 
-export function APPEND_INITIAL_ACTION (state) {
-  state.initial.push({})
+export function APPEND_CHILD (state, { parent, child }) {
+  parent.push(child)
 }
 
-export function CLEAR_INITIAL_ACTION (state) {
-  state.initial.splice(0)
+export function CLEAR_CHILD (state, { parent }) {
+  parent.splice(0)
+}
+
+export function UPDATE_LEFT (state, { parent, value }) {
+  parent.left = value
 }

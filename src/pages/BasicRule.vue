@@ -10,8 +10,9 @@
       <div v-for="(activity, index) in rule.activities" :key="activity.uuid" class="column">
         <activity-wrap :activity="activity" :is-else="index > 0" />
       </div>
-      <div class="column">
-        elsedongzuo
+      <div class="column" v-if="showElse">
+        <h5 class="text-weight-bolder q-my-md">否则</h5>
+        <actions-wrap :actions="rule.else"/>
       </div>
 
       <q-page-sticky position="top-right" :offset="[18, 68]">
@@ -19,6 +20,7 @@
       </q-page-sticky>
       <q-drawer side="right" v-model="showProperty" bordered :width="200" :breakpoint="500">
         <q-checkbox v-model="showInitial" label="初始化动作" />
+         <q-checkbox v-model="showElse" label="否则动作" />
       </q-drawer>
     </div>
 </template>
@@ -47,9 +49,21 @@ export default {
       },
       set (v) {
         if (v) {
-          this.$store.commit('rule/APPEND_INITIAL_ACTION')
+          this.$store.commit('rule/APPEND_CHILD', { parent: this.rule.initial, child: {} })
         } else {
-          this.$store.commit('rule/CLEAR_INITIAL_ACTION')
+          this.$store.commit('rule/CLEAR_CHILD', { parent: this.rule.initial })
+        }
+      }
+    },
+    showElse: {
+      get () {
+        return this.rule.else.length > 0
+      },
+      set (v) {
+        if (v) {
+          this.$store.commit('rule/APPEND_CHILD', { parent: this.rule.else, child: {} })
+        } else {
+          this.$store.commit('rule/CLEAR_CHILD', { parent: this.rule.else })
         }
       }
     }
