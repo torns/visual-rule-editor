@@ -4,15 +4,7 @@
     <editable-expression v-if="decision.type == 'expression'" :expression="decision" />
 
     <div v-if="decision.type == 'assign'">
-      <div>
-        <colored-selection v-if="decision.left && mainDecisionUuid != decision.left.uuid" :obj="decision.left" class="q-pa-xs"/>
-        <span v-if="decision.left && mainDecisionUuid != decision.left.uuid">等于</span>
-        <operator-right-selection-wrap
-          :right-array="decision.right"
-          only-show
-          text-wrap-class="q-pa-xs"
-          in-table/>
-      </div>
+      <assignment :main-decision-uuid="mainDecisionUuid" :assign="decision" in-table text-wrap-class="q-pa-xs" only-show/>
 
       <div v-if="!decision.right || decision.right.length == 0" class="bg-red-1">&nbsp;</div>
 
@@ -40,17 +32,15 @@
 </template>
 
 <script>
+import Assignment from './Assignment'
 import DecisionEditorWrap from './DecisionEditorWrap'
-import ColoredSelection from './ColoredSelection'
 import EditableExpression from './EditableExpression'
-import OperatorRightSelectionWrap from './OperatorRightSelectionWrap'
 export default {
   name: 'EditableDecision',
   components: {
+    Assignment,
     DecisionEditorWrap,
-    ColoredSelection,
-    EditableExpression,
-    OperatorRightSelectionWrap
+    EditableExpression
   },
   props: {
     decision: Object,

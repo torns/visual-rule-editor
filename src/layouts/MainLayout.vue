@@ -73,7 +73,7 @@
           />
         </q-card-section>
         <q-card-section>
-          <q-btn color="primary" label="规则导入" @click="importRule"/>
+          <q-btn color="primary" label="规则导入" @click="importRule" :disable="ruleTextTmp == ''"/>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -94,7 +94,7 @@
           />
         </q-card-section>
         <q-card-section>
-          <q-btn color="primary" label="对象库导入" @click="importEnv"/>
+          <q-btn color="primary" label="对象库导入" @click="importEnv" :disable="envTextTmp == ''"/>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -416,8 +416,8 @@ export default {
     // 请求规则数据，样例见src/source/demoDecision.json
     // 并将请求到的数据存入data中
     this.$store.dispatch('env/setEnv', this.env)
-    // this.$store.dispatch('rule/setRule', this.decisionRule)
-    this.$store.dispatch('rule/setRule', this.basicRule)
+    this.$store.dispatch('rule/setRule', this.decisionRule)
+    // this.$store.dispatch('rule/setRule', this.basicRule)
   }
 }
 </script>

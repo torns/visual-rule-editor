@@ -25,7 +25,7 @@ export function decisionConditionFieldUuids (state) {
   //     }
   //   }
   // }
-  for (let i = 0; i < state.head.conditions.length; i++) {
+  for (let i = 0; state.head.conditions && i < state.head.conditions.length; i++) {
     let obj = state.head.conditions[i]
     uuids.push(obj.uuid)
   }
@@ -43,7 +43,7 @@ export function decisionAssignUuids (state) {
   //     }
   //   }
   // }
-  for (let i = 0; i < state.head.decisions.length; i++) {
+  for (let i = 0; state.head.decisions && i < state.head.decisions.length; i++) {
     let obj = state.head.decisions[i]
     uuids.push(obj.uuid)
   }
