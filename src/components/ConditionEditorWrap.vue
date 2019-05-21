@@ -1,5 +1,5 @@
 <template>
-  <div class="row items-center q-gutter-x-lg">
+  <div class="row items-center q-gutter-x-lg justify-center">
     <div>
       <q-btn :label="condition.logic == 'and' ? '并且' : '或者'">
         <q-menu auto-close>
@@ -19,7 +19,7 @@
       </q-btn>
     </div>
     <div class="column q-gutter-lg">
-      <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="col hover-show-parent">
+      <div v-for="(judge, ji) in condition.children" :key="judge.uuid" class="row hover-show-parent">
         <span class="hover-show cursor-pointer float-left q-mr-xs" >
           <q-icon name="transform" color="teal-7" style="margin-top: 10px" />
           <condition-change-menu :type="judge.type" @change-to-condition="changeToCondition(ji)" @change-to-expression="changeToExpression(ji)" @change-to-judge="changeToJudge(ji)"/>
@@ -32,7 +32,7 @@
 
             <operator-right-selection-wrap
               v-if="$judgementHasRight(judge)"
-              :needed-value-type="$store.getters['env/findObject'](mainLeftUuid).valueType"
+              :needed-value-type="$store.getters['env/findObject'](judge.left.uuid).valueType"
               :right-array="judge.right"
               :ext-info="{judgeIndex: ji}"
               @symbol-selected="symbolSelected"

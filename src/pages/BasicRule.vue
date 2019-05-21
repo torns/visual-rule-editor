@@ -1,21 +1,34 @@
 <template>
-    <div>
-      <condition-wrap v-bind:activity="rule.activity[0]"/>
+    <div class="q-pa-lg">
+      <div class="row">
+        chushihuadongzuo
+      </div>
+      <div class="row" v-if="rule.activities.length == 0">
+        <activity-wrap />
+      </div>
+      <div v-for="(activity, index) in rule.activities" :key="activity.uuid" class="row">
+        <activity-wrap :activity="activity" :is-else="index > 0" />
+      </div>
+      <div class="row">
+        elsedongzuo
+      </div>
     </div>
 </template>
 
 <script>
-import ConditionWrap from 'src/components/ConditionWrap.vue'
+import ActivityWrap from 'src/components/ActivityWrap.vue'
 export default {
   name: 'BasicRule',
   components: {
-    ConditionWrap
+    ActivityWrap
   },
   data: () => {
     return {
-      rule: {
-
-      }
+    }
+  },
+  computed: {
+    rule () {
+      return this.$store.state.rule
     }
   }
 }

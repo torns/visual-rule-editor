@@ -50,6 +50,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-fallthrough': 'warn'
+    'no-fallthrough': 'warn',
+    'no-eval': 'off'
   }
 }

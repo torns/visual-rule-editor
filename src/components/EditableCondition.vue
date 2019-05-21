@@ -17,13 +17,13 @@
       </q-list>
     </q-menu>
 
-    <q-dialog v-model="editing" persistent>
+    <q-dialog v-model="editing" persistent full-width>
       <q-card>
         <q-card-section class="row items-center">
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
-        <q-card-section>
+        <q-card-section class="q-pb-lg">
           <condition-editor-wrap :condition="condition" :main-left-uuid="mainLeftUuid"/>
         </q-card-section>
       </q-card>

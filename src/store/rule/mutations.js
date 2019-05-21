@@ -6,6 +6,11 @@ export function someMutation (state) {
 export function SET_RULE (state, rule) {
   state.type = rule.type
   state.uuid = rule.uuid
+  state.content = []
+  state.head = {}
+  state.initial = []
+  state.activities = []
+  state.else = []
   switch (rule.type) {
     case 'basicRule':
       state.initial = rule.initial
@@ -211,4 +216,12 @@ export function CHANGE_CONDITION_TO_JUDGE (state, { condition, judgeIndex }) {
       'type': 'unknow'
     }]
   })
+}
+
+export function APPEND_INITIAL_ACTION (state) {
+  state.initial.push({})
+}
+
+export function CLEAR_INITIAL_ACTION (state) {
+  state.initial.splice(0)
 }
